@@ -1,0 +1,237 @@
+/*
+ * These are the brand colors for the application and should not be changed.
+ */
+* {
+  /* Primary colors */
+  --brand-indigo: #000334;
+  --brand-cyan: #52daf2;
+  --brand-navy: #001b5e;
+  --brand-black: #000;
+  --brand-white: #fff;
+
+  /* Accent colors*/
+  --brand-blue-dark: #0957be;
+  --brand-blue: #2fb1e6;
+  --brand-blue-light: #9bd7ee;
+  --brand-violet-dark: #33287c;
+  --brand-violet: #5842d2;
+  --brand-violet-light: #b8b2e4;
+  --brand-pink-dark: #942859;
+  --brand-pink: #fd4497;
+  --brand-pink-light: #fcc1dc;
+  --brand-turquoise-dark: #188478;
+  --brand-turquoise: #29e1cb;
+  --brand-turquoise-light: #adece5;
+  --brand-cool-gray-0: white;
+  --brand-cool-gray-5: #f3f5f8;
+  --brand-cool-gray-10: #e5eaf0;
+  --brand-cool-gray-20: #d7dee8;
+  --brand-cool-gray-30: #ccd5e1;
+  --brand-cool-gray-40: #bac2cc;
+  --brand-cool-gray-50: #959ba3;
+  --brand-cool-gray-60: #6f747a;
+  --brand-cool-gray-70: #4a4d52;
+  --brand-cool-gray-80: #252729;
+  --brand-cool-gray-90: #131314;
+  --brand-cool-gray-100: black;
+}
+
+/* Override Bootstrap variables. */
+/* HACK: setting bootstrap vars on `:root` didn't work; reverting to `*`. */
+:root{
+  --bs-gray-100: var(--brand-cool-gray-10);
+  --bs-gray-200: var(--brand-cool-gray-20);
+  --bs-gray-300: var(--brand-cool-gray-30);
+  --bs-gray-400: var(--brand-cool-gray-40);
+  --bs-gray-500: var(--brand-cool-gray-50);
+  --bs-gray-600: var(--brand-cool-gray-60);
+  --bs-gray-700: var(--brand-cool-gray-70);
+  --bs-gray-800: var(--brand-cool-gray-80);
+  --bs-gray-900: var(--brand-cool-gray-90);
+
+  --bs-color-primary: var(--brand-indigo);
+  --bs-color-secondary: var(--brand-cool-gray-60);
+  --bs-color-success: var(--brand-turquoise);
+  --bs-color-info: var(--brand-cyan);
+  --bs-color-warning: var(--brand-pink);
+  --bs-color-danger: var(--brand-violet);
+  --bs-color-light: var(--brand-cool-gray-10);
+  --bs-color-dark: var(--brand-indigo);
+
+  --bs-border-radius: 0;
+  --bs-border-radius-sm: 0;
+  --bs-border-radius-lg: 0;
+  --bs-border-radius-xl: 0;
+  --bs-border-radius-xxl: 0;
+  --bs-border-radius-2xl: 0;
+
+  --bs-font-family-base: "Public Sans", sans-serif;
+  --bs-font-sans-serif: "Public Sans", sans-serif;
+  --bs-font-monospace: "Monaco", monospace;
+  --bs-body-color: var(--brand-cool-gray-90);
+  --bs-heading-color: var(--bs-body-color);
+  --bs-headings-font-family: "Poppins", sans-serif;
+
+  --bs-body-text-size: 15pt;
+  --bs-input-btn-font-size: 1rem;
+  --bs-h1-font-size: 1.75rem;
+  --bs-h2-font-size: 1.5rem;
+  --bs-h3-font-size: 1.25rem; 
+  --bs-h4-font-size: 1.15rem;
+  --bs-h5-font-size: 1rem;
+  --bs-h6-font-size: .95rem;
+
+  --bs-btn-font-weight: bold;
+  --bs-btn-border-width: 2px;
+
+  --bs-card-bg: white;
+  --bs-card-border-width: 0px;
+  --bs-card-cap-bg: var(--brand-indigo);
+  --bs-card-cap-color: white;
+
+  --bs-code-color: var(--brand-indigo);
+
+  --bs-form-check-input-checked-color: var(--brand-cyan);
+
+  --bs-form-select-bg: white;
+  --bs-form-select-border-color: var(--brand-indigo);
+  --bs-form-select-border-width: 2px;
+  --bs-form-select-color: var(--brand-indigo);
+  --bs-form-select-indicator-color: var(--brand-indigo);
+
+  --bs-link-color: var(--brand-indigo);
+  --bs-link-hover-color: var(--brand-pink-dark);
+
+  font-family: "Public Sans", sans-serif;
+  :is(h1, h2, h3, h4, h5, h6) {
+    font-family: "Poppins", sans-serif;
+  }
+
+  h1 { font-size:var(--bs-h1-font-size)}
+  h2 { font-size:var(--bs-h2-font-size)}
+  h3 { font-size:var(--bs-h3-font-size)}
+  h4 { font-size:var(--bs-h4-font-size)}
+  h5 { font-size:var(--bs-h5-font-size)}
+  h6 { font-size:var(--bs-h6-font-size)}
+
+}
+
+/* Our global styles, just fonts for now. */
+/* :root {
+  font-family: "Public Sans", sans-serif;
+  :is(h1, h2, h3, h4, h5, h6) {
+    font-family: "Poppins", sans-serif;
+  }
+} */
+
+a {
+  color: var(--brand-violet-dark);
+  text-decoration-color: var(--brand-violet) !important;
+  text-underline-offset: 20%;
+  &:hover {
+    text-decoration-color: var(--brand-pink) !important;
+  }
+  &:visited {
+    text-decoration-color: var(--brand-violet-dark) !important;
+  }
+}
+
+/* Shorthand for larger/smaller icons. */
+i.icon-xl {
+  font-size: 2.5rem;
+}
+i.icon-lg {
+  font-size: 1.8rem;
+}
+i.icon-md {
+  font-size: 1.2rem;
+}
+i.icon-sm {
+  font-size: 0.8rem;
+}
+i.bi-question-circle-fill {
+  color: var(--brand-violet);
+}
+
+i.bi-question-circle-fill:hover {
+  color: var(--brand-violet-light);
+}
+
+.number-badge {
+  aspect-ratio: 1;
+  background-color: var(--brand-cyan);
+  border-radius: 100%;
+  color: var(--brand-indigo);
+  display: inline-block;
+  font-weight: bold;
+  height: 1.25em;
+  line-height: 1.25em;
+  margin-right: 0.25em;
+  text-align: center;
+  width: 1.25em !important;
+}
+
+.card-header {
+  background-color: var(--brand-indigo);
+  color: var(--brand-white);
+}
+
+select {
+  appearance: none;
+  border-radius: 0;
+  border: var(--bs-border-width) var(--bs-border-thickness) var(--bs-border-color);
+  background: var(--bs-gray-100);
+  padding: 0.125em 0.5em;
+}
+select::after {
+  content: "▾";
+  padding-inline-start: 0.5em;
+}
+
+select:hover {
+  background-color: var(--bs-gray-200);
+}
+
+/* Disable extra disclosure triangle in Safari */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Use CSS to highlight hovered areas, to avoid constant regeneration of geoStyler. */
+.lmap .leaflet-overlay-pane path.leaflet-interactive:hover {
+  opacity: 0.75;
+}
+
+/* HACK: Tried and failed to use BS variables for this, but they were overridden somewhere. */
+.dropdown-menu {
+  z-index: 10000;
+}
+
+/* Avoid color clashes with the legend colors by gray-scaling the map */
+.map-gray {
+  filter: grayscale(100%) contrast(120%);
+}
+
+.screen-reader-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* For use in beta */
+.debug {
+  background: red !important;
+  color: white !important;
+  outline: 4px solid yellow !important;
+}
+
+/* For use in beta */
+.debug {
+  background: red !important;
+  color: white !important;
+  outline: 4px solid yellow !important;
+}

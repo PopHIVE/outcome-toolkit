@@ -1,0 +1,15 @@
+numpy==1.23.2
+dagster==1.10.19
+dagster-graphql
+dagster-pandas
+dagster-pipes
+dagster-webserver
+dagster-postgres
+pandas==2.2.2
+openpyxl==3.1.2
+sqlalchemy==2.0.21
+shapely==2.0.1
+geojson==3.0.1
+geopandas==0.14.4
+psycopg2==2.9.7
+pyarrow==16.1.0

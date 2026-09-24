@@ -1,0 +1,11 @@
+line-length = 119
+
+[lint.per-file-ignores]
+'backend/app/db/database.py' = ['E402', 'F401', 'F811', 'F841']
+#'backend/tests/*' = ["E501"]
+
+
+[format]
+quote-style = 'single'
+
+

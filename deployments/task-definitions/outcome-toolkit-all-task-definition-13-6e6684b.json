@@ -1,0 +1,232 @@
+{
+    "family": "outcome-toolkit-all",
+    "containerDefinitions": [
+        {
+            "name": "postgres",
+            "image": "<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/outcome-toolkit-postgres:6e6684b",
+            "cpu": 4096,
+            "memory": 12288,
+            "portMappings": [],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "POSTGRES_USER",
+                    "value": "postgres"
+                },
+                {
+                    "name": "POSTGRES_DB",
+                    "value": "postgres"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:<AWS_ACCOUNT_ID>:secret:outcome-toolkit-all/dev-78slNZ:POSTGRES_PASSWORD_DEV::"
+                }
+            ],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/outcome-toolkit-all",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"
+                ],
+                "interval": 10,
+                "timeout": 5,
+                "retries": 5
+            }
+        },
+        {
+            "name": "backend",
+            "image": "<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/outcome-toolkit-backend:6e6684b",
+            "cpu": 4096,
+            "memory": 12288,
+            "portMappings": [],
+            "essential": false,
+            "environment": [
+                {
+                    "name": "POSTGRES_USER",
+                    "value": "postgres"
+                },
+                {
+                    "name": "POSTGRES_HOST",
+                    "value": "localhost"
+                },
+                {
+                    "name": "FLASK_SECRET_KEY",
+                    "value": "arn:aws:secretsmanager:us-east-1:<AWS_ACCOUNT_ID>:secret:outcome-toolkit-all/dev-78slNZ:FLASK_SECRET_KEY_DEV::"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "arn:aws:secretsmanager:us-east-1:<AWS_ACCOUNT_ID>:secret:outcome-toolkit-all/dev-78slNZ:POSTGRES_PASSWORD_DEV::"
+                },
+                {
+                    "name": "POSTGRES_PORT",
+                    "value": "5432"
+                },
+                {
+                    "name": "REBUILD_DB",
+                    "value": "yes"
+                },
+                {
+                    "name": "POSTGRES_DB",
+                    "value": "postgres"
+                },
+                {
+                    "name": "RUN_TESTS",
+                    "value": "no"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dependsOn": [
+                {
+                    "containerName": "postgres",
+                    "condition": "HEALTHY"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/outcome-toolkit-all",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl --silent --fail localhost:5000/api/health-check || exit 1"
+                ],
+                "interval": 10,
+                "timeout": 10,
+                "retries": 10,
+                "startPeriod": 300
+            }
+        },
+        {
+            "name": "frontend",
+            "image": "<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/outcome-toolkit-frontend:6e6684b",
+            "cpu": 4096,
+            "memory": 4096,
+            "portMappings": [],
+            "essential": false,
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/outcome-toolkit-all",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "wget --no-verbose --tries=1 --spider http://localhost:5001/ || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 10,
+                "retries": 10,
+                "startPeriod": 0
+            }
+        },
+        {
+            "name": "nginx",
+            "image": "<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/outcome-toolkit-nginx:6e6684b",
+            "cpu": 4096,
+            "memory": 4096,
+            "portMappings": [
+                {
+                    "name": "nginx-80-http",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": false,
+            "command": [
+                "/app/start.sh"
+            ],
+            "environment": [
+                {
+                    "name": "BACKEND_SERVER_ADDR",
+                    "value": "localhost:5000"
+                },
+                {
+                    "name": "FRONTEND_SERVER_ADDR",
+                    "value": "localhost:5001"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dependsOn": [
+                {
+                    "containerName": "backend",
+                    "condition": "HEALTHY"
+                },
+                {
+                    "containerName": "frontend",
+                    "condition": "START"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/outcome-toolkit-all",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl --silent --fail localhost:80/health-check || exit 1"
+                ],
+                "interval": 10,
+                "timeout": 10,
+                "retries": 10,
+                "startPeriod": 300
+            }
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/CustomECSTaskAgent",
+    "executionRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/CustomECSTaskExecutionAgent",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "16384",
+    "memory": "32768",
+    "ephemeralStorage": {
+        "sizeInGiB": 50
+    },
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}

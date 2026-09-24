@@ -1,0 +1,27 @@
+# Secret Stuff
+*.pem
+.local
+.env.secrets
+
+# Local-only files (not tracked)
+IGNORE/
+
+# Python Stuff
+env
+__pycache__
+.pytest_cache
+venv/
+
+# Unzipped Data
+backend/data/DECENNIALDP2020-DP1
+backend/data/cb_2020_us_zcta520_500k.csv
+
+# Misc
+.DS_Store
+.idea
+.*.swp
+.*~
+~$*.xlsx
+
+# Logs
+logs/backend.*

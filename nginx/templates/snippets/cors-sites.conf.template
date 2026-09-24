@@ -1,0 +1,50 @@
+
+# Check if it's a preflight request and "cache" it for 20 days
+if ($request_method = 'OPTIONS') {
+  add_header 'Access-Control-Allow-Origin' "$cors" always; # <-- Variable $cors
+  add_header 'Access-Control-Allow-Credentials' 'true';
+  add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+  add_header 'Access-Control-Max-Age' 57542400;
+  add_header 'Content-Type' 'text/plain charset=UTF-8';
+  add_header 'Content-Length' 0;
+  return 204;
+}
+
+# Attach CORS headers only if it's a valid origin ($cors should not be empty)
+if ($cors != "") {
+  add_header 'Access-Control-Allow-Origin' "$cors" always; # <-- Variable $cors
+  add_header 'Access-Control-Allow-Credentials' 'true' always;
+  add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+  add_header 'Access-Control-Allow-Headers' 'Accept, Authorization, Cache-Control, Content-Type, DNT, If-Modified-Since, Keep-Alive, Origin, User-Agent, X-Requested-With' always;
+}
+
+# CSP Nonce Generation and insertion
+set_secure_random_alphanum $cspNonce 64;
+sub_filter_once off;
+sub_filter_types *;
+sub_filter "**CSP_NONCE**" $cspNonce; # Dynamic, changes nonce code on every request 
+
+# Set Content Security Policy 
+set $cspDefault "default-src 'self'"; # Default CSP Policy to fall back on 
+set $cspSandbox "sandbox allow-same-origin allow-scripts allow-downloads"; # Enables Sandboxing - Note: allow-same-origin and allow-scripts below are both required, removing one breaks the code, keeping both produces an escape sandbox warning 
+set $cspFrameAncestors "frame-ancestors 'self'"; # Enables iFrames
+set $cspBaseUri "base-uri 'self'"; # Restrict allowed uri domains 
+set $cspFormAction "form-action 'none'"; # Don't allow form actions
+set $cspImg "img-src 'self' data:"; # Define allowed image sources
+set $cspImg "${cspImg} 'nonce-$cspNonce'"; # Restrict to nonce approved images
+set $cspImg "${cspImg} https://*.openstreetmap.org"; # Allow Open Street Map Images
+set $cspStyle "style-src  'self'"; # Define allowed image styles
+set $cspStyle "${cspStyle} 'nonce-$cspNonce'"; # Restrict to nonce approved styles
+set $cspStyle "${cspStyle} https://unpkg.com/swagger-ui-dist@3//swagger-ui.css"; # Restrict to swagger styling
+set $cspScript "script-src  'self'"; # Define allowed script sources
+set $cspScript "${cspScript} 'nonce-$cspNonce'"; # Restrict to nonce approved script sources
+set $cspScript "${cspScript} https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js https://unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js"; # Configure Strict Dynamic
+set $cspFinalHeader "${cspDefault}; ${cspSandbox}; ${cspFrameAncestors}; ${cspBaseUri}; ${cspFormAction}; ${cspImg}; ${cspStyle}; ${cspScript}";
+
+
+# Security Headers
+add_header X-Frame-Options "SAMEORIGIN";
+# add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
+add_header Content-Security-Policy $cspFinalHeader;
+add_header X-XSS-Protection "1; mode=block";
+add_header X-Content-Type-Options "nosniff";

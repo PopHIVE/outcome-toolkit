@@ -1,0 +1,130 @@
+{
+  "cSpell.words": [
+    "aboutdata",
+    "APIV",
+    "ascvd",
+    "Autauga",
+    "bbox",
+    "Chilton",
+    "collapser",
+    "county_namelsad",
+    "datasource",
+    "devtest",
+    "Fargate",
+    "FCMC",
+    "geograph",
+    "gitbash",
+    "gov",
+    "Granularities",
+    "healthit",
+    "healthoutcomes",
+    "hvid",
+    "intrapartum",
+    "invitemember",
+    "listitem",
+    "lmap",
+    "logosmall",
+    "luxon",
+    "Millis",
+    "nemo",
+    "NEMSIS",
+    "networkidle",
+    "NHTSA",
+    "paymentrates",
+    "pdfmake",
+    "pgadmin",
+    "Pinia",
+    "Priti",
+    "pytest",
+    "Roboto",
+    "rstudio",
+    "runtypes",
+    "smuser",
+    "statin",
+    "submethod",
+    "Traceback",
+    "unsearched",
+    "userguide",
+    "venv",
+    "Veradigm",
+    "Veridigm",
+    "VITE",
+    "vueuse",
+    "whitehouse.gov",
+    "zcta",
+    "zscalar"
+  ],
+  "playwright.reuseBrowser": true,
+  "python.analysis.extraPaths": ["./backend"],
+  "todo-tree.filtering.ignoreGitSubmodules": true,
+  "todo-tree.filtering.useBuiltInExcludes": "file excludes",
+  "todo-tree.general.periodicRefreshInterval": 1,
+  "todo-tree.general.revealBehaviour": "leave focus in tree",
+  "todo-tree.general.tags": ["NOPUSH", "FIXME", "BUG", "HACK", "TODO", "FUTURE", "NOTE"],
+  "todo-tree.highlights.defaultHighlight": {
+    "fontWeight": "bold",
+    "foreground": "white",
+    "type": "tag"
+
+  },
+  "todo-tree.highlights.customHighlight": {
+    
+    "NOPUSH": { 
+      "icon": "squirrel",
+      "background": "#FCF",
+      "foreground": "#F0F",
+      "iconColour": "#F0F",
+      "type": "whole-line" 
+    },
+    "BUG": {
+      "icon": "bug",
+      "background": "red",
+      "foreground": "black",
+      "iconColour": "red",
+      "rulerColour": "red",
+      "type": "whole-line"
+    },
+    "FIXME": {
+      "icon": "flame",
+      "foreground": "#F40",
+    },
+    "FUTURE": {
+      "icon": "calendar",
+      "foreground": "violet",
+    },
+    "HACK": {
+      "icon": "tools",
+      "foreground": "#D80",
+    },
+    "TODO": {
+      "icon": "bell-fill",
+      "foreground": "#40B040",
+      "type": "tag"
+    },
+    "NOTE": {
+      "icon": "bookmark-fill",
+      "foreground": "gray",
+    }
+  },
+  "todo-tree.highlights.useColourScheme": false,
+  "todo-tree.regex.subTagRegex": ":| -?-",
+  "todo-tree.tree.buttons.export": true,
+  "todo-tree.tree.disableCompactFolders": true,
+  "todo-tree.tree.expanded": true,
+  "todo-tree.tree.groupedByTag": true,
+  "todo-tree.tree.labelFormat": "${tag} ${filename}:${line}  ${after}",
+  "todo-tree.tree.scanMode": "workspace only",
+  "todo-tree.tree.showCountsInTree": true,
+  "terraform.codelens.referenceCount": true,
+  "[terraform]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.tabSize": 2
+  },
+  "[terraform-vars]": {
+    "editor.tabSize": 2
+  },
+  "cSpell.enabled": true,
+  "todo-tree.general.showActivityBarBadge": false,
+  "todo-tree.general.showIconsInsteadOfTagsInStatusBar": false
+}

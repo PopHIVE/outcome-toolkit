@@ -1,0 +1,55 @@
+version: 0.1.0
+constants:
+  geographies:
+    country: COUNTRY
+    state: STATE
+    county: COUNTY
+    zcta3: ZCTA3
+    zcta5: ZCTA5
+  outcomes:
+    alcohol: 
+      name: alcohol
+      metrics:
+        - metric: alcohol_rate
+          bin_rank: alcohol_rate_rank
+        - metric: alcohol_rate_rank
+          bin_rank: alcohol_rate_rank
+        - metric: alcohol_rate_6mo
+          bin_rank: alcohol_rate_6mo_rank
+    opioid: 
+      name: opioid
+      metrics:
+        - metric: opioid_rate
+          bin_rank: opioid_rate_rank
+        - metric: opioid_rate_rank
+          bin_rank: opioid_rate_rank
+        - metric: opioid_rate_6mo
+          bin_rank: opioid_rate_6mo_rank
+    soc:
+      name: soc
+      metrics:
+        - metric: any_soc_rate
+          bin_rank: any_soc_rate_rank
+        - metric: any_soc_rate_rank
+          bin_rank: any_soc_rate_rank
+        - metric: any_soc_rate_6mo
+          bin_rank: any_soc_rate_6mo_rank
+    cardio:
+      name: cardio
+      metrics:
+        - metric: total_mean
+          bin_rank: total_mean_rank
+        - metric: total_mean_rank
+          bin_rank: total_mean_rank
+        - metric: total_mean_6mo
+          bin_rank: total_mean_6mo_rank
+  charactersitics:
+    metadata: metadata
+    geometry: geometry
+    age: age
+    sex: sex
+    race: race/ethnicity
+    rurality: rurality
+    general: general
+    income: income
+    age_p_sex: age+sex

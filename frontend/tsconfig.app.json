@@ -1,0 +1,13 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/.local/**/*"],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "lib": ["DOM", "ESNext"],
+    "types": ["node", "happy-dom"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

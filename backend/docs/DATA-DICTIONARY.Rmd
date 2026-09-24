@@ -1,0 +1,42 @@
+---
+title: "Data Dictionary"
+author: "Outcome Toolkit Dev Team"
+date: "12/20/2023"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+---
+
+
+```{r setup, message = FALSE}
+knitr::opts_chunk$set(message = FALSE, eval = TRUE) ## obvs, eval = TRUE in real life
+
+library(readxl)
+library(knitr)
+library(tidyverse)
+library(kableExtra)
+
+```
+
+```{r load_data}
+cb_geos <- read_excel("DATA-DICTIONARY.xlsx", sheet = 'cb_geos')
+
+```
+
+# Census Bureau Geometries (cb_geos)
+
+Some Info Text Here ...
+
+
+```{r print_inhosp, eval = TRUE}
+display.cols <- c('COLUMN', 'LABEL', 'DISPLAY_NAME', 'DESCRIPTION', 'CALCULATIONS')
+
+kable(
+  rbind(display.cols, cb_geos[display.cols]),
+  format = "html",
+  col.names = rep("", length(display.cols))
+) %>%
+  group_rows(index = c("CB Geos" = 1)) %>%
+  kable_styling(bootstrap_options = c("hover", "striped"))
+```

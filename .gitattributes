@@ -1,0 +1,6 @@
+# All files are checked into the repo with LF
+* text=auto
+
+# These files are checked out using LF locally
+*.sh eol=lf
+*.sql eol=lf

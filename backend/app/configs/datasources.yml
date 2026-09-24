@@ -1,0 +1,1364 @@
+version: 0.1.1
+datasources:
+  users:
+  - name: 'User Data'
+    parser: 'load_users'  
+    data_release: '2025'  
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'users.csv'
+
+  projects:
+  - name: 'Project Data'
+    parser: 'load_projects'
+    data_release: '2025'
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'projects.csv'
+
+  project_measurements:
+  - name: 'Project Measurements Data'
+    parser: 'load_project_measurements'
+    data_release: '2025'
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'project_measurements.csv'
+
+  mid_metrics:
+  - name: 'Mid Metrics Data'
+    parser: 'load_mid_metrics'
+    data_release: '2025'
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'mid_metrics.csv'
+
+  target_payouts:
+  - name: 'Target Payout Data'
+    parser: 'load_target_payouts'
+    data_release: '2025'
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'target_payout_rate.csv'
+
+  project_area_associations:
+  - name: 'Project Area Associations'
+    parser: 'load_project_areas'
+    data_release: '2025'
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'project_area_association.csv'
+
+  user_project_associations:
+  - name: 'User Project Associations'
+    parser: 'load_user_projects'
+    data_release: '2025'
+    data_provider: 'Internal'
+    params:
+      input_file_fr: 'user_project_association.csv'
+
+  cb_geos:
+  - name: 'State Geos'
+    parser: 'load_zipped_census_geos'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'cb_2020_us_state_500k.zip'
+      geography: 'STATE'
+  - name: 'County Geos'
+    parser: 'load_zipped_census_geos'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'cb_2020_us_county_500k.zip'
+      geography: 'COUNTY'
+  - name: 'ZCTA5 Geos'
+    parser: 'load_zipped_census_geos'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'cb_2020_us_zcta520_500k.zip'
+      geography: 'ZCTA5'
+      geoid_col: 'GEOID20'
+      affgeoid_col: 'AFFGEOID20'
+  - name: 'ZCTA3 Geos'
+    parser: 'load_zipped_census_geos'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'cb_2020_us_zcta3_500k.shp.zip'
+      geography: 'ZCTA3'
+
+  cb_demographics:
+  - name: 'Demographics Profile State'
+    parser: 'load_demographic_profile'
+    data_release: '2020'
+    data_provider: 'Census Bureau Census Demographic Profile'
+    params:
+      input_file: 'cb_demographics_state_2020.csv'
+      geography: 'STATE'
+      start_date: '2020-01-01'
+      end_date: '2020-12-31'
+  - name: 'Demographics Profile County'
+    parser: 'load_demographic_profile'
+    data_release: '2020'
+    data_provider: 'Census Bureau Census Demographic Profile'
+    params:
+      input_file: 'cb_demographics_county_2020.csv'
+      geography: 'COUNTY'
+      start_date: '2020-01-01'
+      end_date: '2020-12-31'
+  - name: 'Demographics Profile ZCTA5'
+    parser: 'load_demographic_profile'
+    data_release: '2020'
+    data_provider: 'Census Bureau Census Demographic Profile'
+    params:
+      input_file: 'cb_demographics_zcta5_2020.csv'
+      geography: 'ZCTA5'
+      start_date: '2020-01-01'
+      end_date: '2020-12-31'
+  - name: 'Demographics Profile ZCTA3'
+    parser: 'load_demographic_profile'
+    data_release: '2020'
+    data_provider: 'Census Bureau Census Demographic Profile'
+    params:
+      input_file: 'cb_demographics_zcta3_2020.csv'
+      geography: 'ZCTA3'
+      start_date: '2020-01-01'
+      end_date: '2020-12-31'
+
+  acs_estimates:
+    - name: 'ACS Estimates State'
+      parser: 'load_acs_estimates'
+      data_release: '2022'
+      data_provider: 'Census Bureau 2022 American Community Survey'
+      params:
+        input_file: 'cb_acs_state_2022.csv'
+        geography: 'STATE'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+    - name: 'ACS Estimates Counties'
+      parser: 'load_acs_estimates'
+      data_release: '2022'
+      data_provider: 'Census Bureau 2022 American Community Survey'
+      params:
+        input_file: 'cb_acs_county_2022.csv'
+        geography: 'COUNTY'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+    - name: 'ACS Estimates ZCTA5'
+      parser: 'load_acs_estimates'
+      data_release: '2022'
+      data_provider: 'Census Bureau 2022 American Community Survey'
+      params:
+        input_file: 'cb_acs_zcta5_2022.csv'
+        geography: 'ZCTA5'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+    - name: 'ACS Estimates ZCTA3'
+      parser: 'load_acs_estimates'
+      data_release: '2022'
+      data_provider: 'Census Bureau 2022 American Community Survey'
+      params:
+        input_file: 'cb_acs_zcta3_2022.csv'
+        geography: 'ZCTA3'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+
+  ascvd_scores:
+  - name: ' ASCVD Scores'
+    parser: 'load_ascvd_aggregate'
+    data_release: 'Jul 2025'
+    data_provider: 'Veradigm'
+    params:
+        input_file: 'data_submission_VERADIGM_2025-07.xlsx'
+
+  ascvd_scores_v2:
+  - name: ' ASCVD Scores Monthly'
+    parser: 'load_ascvd_monthly_data'
+    data_release: 'Jul 2025'
+    data_provider: 'Veradigm'
+    params:
+        input_file: 'data_submission_VERADIGM_2025-07.xlsx'
+
+  soc_data:
+  - name: 'Health Verity SOC Data for ZCTA3'
+    parser: 'load_hv_soc_data'
+    data_release: 'Jul 2025'
+    data_provider: 'Health Verity'
+    params:
+      input_file: 'hv_aggregate_table_20250731_HV009879/data_submission_Open_Claims_HealthVerity_2025-07-31.gz.parquet'
+
+  aggregated_soc_data:
+  - name: 'Aggregated View of Health Verity SOC Data for ZCTA3'
+    parser: 'load_aggregated_hv_soc_data'
+    data_release: 'Jul 2025'
+    data_provider: 'Health Verity'
+    params:
+      input_file: 'hv_aggregate_table_20250731_HV009879/data_submission_Open_Claims_HealthVerity_2025-07-31.gz.parquet'
+ 
+  aggregated_soc_data_v2:
+  - name: 'Aggregated View of Health Verity SOC Data for ZCTA3'
+    parser: 'load_aggregated_hv_soc_data_v2'
+    data_release: 'Jul 2025'
+    data_provider: 'Health Verity'
+    params:
+      input_file: 'hv_aggregate_table_20250731_HV009879/data_submission_Open_Claims_HealthVerity_2025-07-31.gz.parquet'
+
+
+  nemsis_opioid_data:
+    - name: 'NEMSIS Opioid COUNTY'
+      parser: 'load_nemsis_opioid_data'
+      data_release: 'Mar 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMRES-20240308-Y2022.zip'
+        file_name: 'allopioid_county_tosend.sas7bdat'
+        geography: 'COUNTY'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+    
+    # - name: 'NEMSIS Opioid COUNTY'
+    #   parser: 'load_nemsis_opioid_data'
+    #   data_release: 'Mar 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240318-Y2023.zip'
+    #     file_name: 'allopioid_county_tosend_2023.sas7bdat'
+    #     geography: 'COUNTY'
+    #     start_date: '2023-01-01'
+    #     end_date: '2023-12-31'
+
+  nemsis_opioid_data_v2:
+    - name: 'NEMSIS Opioid COUNTY Monthly'
+      parser: 'load_nemsis_opioid_data_monthly'
+      data_release: 'Jul 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q1.zip'
+        file_name: 'allopioid_county_tosend_2024.sas7bdat'
+        geography: 'COUNTY'
+    
+    - name: 'NEMSIS Opioid COUNTY Monthly'
+      parser: 'load_nemsis_opioid_data_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q2.zip'
+        file_name: 'allopioid_county_tosend_2024.sas7bdat'
+        geography: 'COUNTY'
+
+    # - name: 'NEMSIS Opioid COUNTY Monthly v2'
+    #   parser: 'load_nemsis_opioid_monthly_v2'
+    #   data_release: 'Sep 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240930.zip'
+    #     file_name: 'opioidmeasure.sas7bdat'
+    #     rank_col: 'RankOpioidRate'
+    #     rank_val_col: 'RankValueOpioidRate'
+    #     geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - 2023'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2023.zip'
+        file_name: 'allopioid_county_tosend_2023.sas7bdat'
+        rank_col: 'Rank'
+        rank_val_col: 'RankValue'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - JUL'
+      parser: 'load_nemsis_opioid_data_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_JUL.zip'
+        file_name: 'allopioid_county_tosend_2024july.sas7bdat'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - AUG'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_AUG.zip'
+        file_name: 'opioidmeasure.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - SEP'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_SEP.zip'
+        file_name: 'opioidmeasure.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - OCT'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_OCT.zip'
+        file_name: 'opioidmeasure.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - NOV'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Dec 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-03.zip'
+        file_name: 'opioidmeasure.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - DEC'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Jan 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-31.zip'
+        file_name: 'opioidmeasure.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - FEB'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Feb 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-02-28_resubmitted.zip'
+        file_name: 'opioidmeasure_cp25.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - MAR'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Mar 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-03-31.zip'
+        file_name: 'opioidmeasure_cp25.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - APR'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Apr 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-05.zip'
+        file_name: 'opioidmeasure_cp25.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - MAY'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'May 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-30.zip'
+        file_name: 'opioidmeasure_cp25.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - JUN'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Jun 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-06-30.zip'
+        file_name: 'opioidmeasure_cp25.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid COUNTY Monthly v2 - JUL'
+      parser: 'load_nemsis_opioid_monthly_v2'
+      data_release: 'Jul 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-08-01.zip'
+        file_name: 'opioidmeasure_cp25.sas7bdat'
+        rank_col: 'RankOpioidRate'
+        rank_val_col: 'RankValueOpioidRate'
+        geography: 'COUNTY'
+
+  nemsis_alcohol_data_v2:
+    - name: 'NEMSIS Alcohol COUNTY Monthly'
+      parser: 'load_nemsis_alcohol_data_monthly'
+      data_release: 'Jul 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q1.zip'
+        file_name: 'allalcohol_county_tosend_2024.sas7bdat'
+        geography: 'COUNTY'
+    
+    - name: 'NEMSIS Alcohol COUNTY Monthly'
+      parser: 'load_nemsis_alcohol_data_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q2.zip'
+        file_name: 'allalcohol_county_tosend_2024.sas7bdat'
+        geography: 'COUNTY'
+  
+    # - name: 'NEMSIS Alcohol COUNTY Monthly v2'
+    #   parser: 'load_nemsis_alcohol_monthly_v2'
+    #   data_release: 'Sep 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240930.zip'
+    #     file_name: 'alcoholmeasure.sas7bdat'
+    #     rank_col: 'RankAlcoholRate'
+    #     rank_val_col: 'RankValueAlcoholRate'
+    #     geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - 2023'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2023.zip'
+        file_name: 'allalcohol_county_tosend_2023.sas7bdat'
+        rank_col: 'Rank'
+        rank_val_col: 'RankValue'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - JUL'
+      parser: 'load_nemsis_alcohol_data_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_JUL.zip'
+        file_name: 'allalcohol_county_tosend_202407.sas7bdat'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - AUG'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_AUG.zip'
+        file_name: 'alcoholmeasure.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Monthly v2 - SEP'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_SEP.zip'
+        file_name: 'alcoholmeasure.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - OCT'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_OCT.zip'
+        file_name: 'alcoholmeasure.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - NOV'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-03.zip'
+        file_name: 'alcoholmeasure.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - DEC'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Jan 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-31.zip'
+        file_name: 'alcoholmeasure.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - FEB'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Feb 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-02-28_resubmitted.zip'
+        file_name: 'alcoholmeasure_cp25.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - MAR'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Mar 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-03-31.zip'
+        file_name: 'alcoholmeasure_cp25.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - APR'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Apr 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-05.zip'
+        file_name: 'alcoholmeasure_cp25.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - May'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'May 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-30.zip'
+        file_name: 'alcoholmeasure_cp25.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - JUN'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Jun 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-06-30.zip'
+        file_name: 'alcoholmeasure_cp25.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol COUNTY Monthly v2 - JUL'
+      parser: 'load_nemsis_alcohol_monthly_v2'
+      data_release: 'Jul 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-08-01.zip'
+        file_name: 'alcoholmeasure_cp25.sas7bdat'
+        rank_col: 'RankAlcoholRate'
+        rank_val_col: 'RankValueAlcoholRate'
+        geography: 'COUNTY'
+
+  nemsis_alcohol_data:
+    - name: 'NEMSIS Alcohol COUNTY'
+      parser: 'load_nemsis_alcohol_data'
+      data_release: 'Feb 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMRES-20240308-Y2022.zip'
+        file_name: 'allalcohol_county_tosend.sas7bdat'
+        geography: 'COUNTY'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+
+    # - name: 'NEMSIS Alcohol COUNTY'
+    #   parser: 'load_nemsis_alcohol_data'
+    #   data_release: 'Mar 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240318-Y2023.zip'
+    #     file_name: 'allalcohol_county_tosend_2023.sas7bdat'
+    #     geography: 'COUNTY'
+    #     start_date: '2023-01-01'
+    #     end_date: '2023-12-31'
+
+  bins:
+    - name: 'NEMSIS Alcohol Bins'
+      parser: 'load_nemsis_bins'
+      data_release: 'Mar 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMRES-20240308-Y2022.zip'
+        file_name: 'CountyAlcoholBins 3_08_2024.xlsx'
+        geography: 'COUNTY'
+        outcome: 'alcohol'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+    # - name: 'NEMSIS Alcohol Bins'
+    #   parser: 'load_nemsis_bins'
+    #   data_release: 'Mar 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240318-Y2023.zip'
+    #     file_name: 'CountyAlcoholBins_2023.xlsx'
+    #     geography: 'COUNTY'
+    #     outcome: 'alcohol'
+    #     start_date: '2023-01-01'
+    #     end_date: '2023-12-31'
+
+    # Monthly Bins Alcohol
+    - name: 'NEMSIS Alcohol Bins Monthly'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Jul 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q1.zip'
+        file_name_monthly: 'allalcohol_county_tosend_2024.sas7bdat'
+        file_name_bins: 'CountyAlcoholBins_2024.xlsx'
+        geography: 'COUNTY'
+        outcome: 'alcohol'
+
+    - name: 'NEMSIS Alcohol Bins Monthly'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q2.zip'
+        file_name_monthly: 'allalcohol_county_tosend_2024.sas7bdat'
+        file_name_bins: 'CountyAlcoholBins_2024.xlsx'
+        geography: 'COUNTY'
+        outcome: 'alcohol'
+
+    # - name: 'NEMSIS Opioid Bins Monthly v2'
+    #   parser: 'load_nemsis_bins_monthly_v2'
+    #   data_release: 'Sep 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240930.zip'
+    #     file_name_bins: 'alcoholallrange.sas7bdat'
+    #     outcome: 'alcohol'
+    #     yearmon: '202408'
+    #     metric: 'RankAlcoholRate'
+    #     outcome: 'alcohol'
+    #     geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly - 2023'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2023.zip'
+        file_name_monthly: 'allalcohol_county_tosend_2023.sas7bdat'
+        file_name_bins: 'CountyAlcoholBins_2023.xlsx'
+        geography: 'COUNTY'
+        outcome: 'alcohol'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - JUL 2024'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_JUL.zip'
+        file_name_monthly: 'allalcohol_county_tosend_202407.sas7bdat'
+        file_name_bins: 'CountyAlcoholBins_2024July.xlsx'
+        geography: 'COUNTY'
+        outcome: 'alcohol'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - AUG 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_AUG.zip'
+        file_name_bins: 'alcoholallrange.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202408'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - SEP 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_SEP.zip'
+        file_name_bins: 'alcoholallrange.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202409'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - OCT 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_OCT.zip'
+        file_name_bins: 'alcoholallrange.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202410'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - NOV 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Dec 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-03.zip'
+        file_name_bins: 'alcoholallrange.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202411'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - DEC 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Jan 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-31.zip'
+        file_name_bins: 'alcoholallrange.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202412'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - FEB 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'FEB 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-02-28_resubmitted.zip'
+        file_name_bins: 'alcoholallrange_cp25.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202501'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - MAR 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'MAR 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-03-31.zip'
+        file_name_bins: 'alcoholallrange_cp25.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202502'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - APR 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Apr 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-05.zip'
+        file_name_bins: 'alcoholallrange_cp25.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202503'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - May 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'May 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-30.zip'
+        file_name_bins: 'alcoholallrange_cp25.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202504'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - JUN 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Jun 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-06-30.zip'
+        file_name_bins: 'alcoholallrange_cp25.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202505'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Alcohol Bins Monthly v2 - JUL 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Jul 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-08-01.zip'
+        file_name_bins: 'alcoholallrange_cp25.sas7bdat'
+        outcome: 'alcohol'
+        yearmon: '202506'
+        metric: 'RankAlcoholRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins'
+      parser: 'load_nemsis_bins'
+      data_release: 'Mar 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMRES-20240308-Y2022.zip'
+        file_name: 'CountyOpioidBins3_08_2024.xlsx'
+        geography: 'COUNTY'
+        outcome: 'opioid'
+        start_date: '2022-01-01'
+        end_date: '2022-12-31'
+    # - name: 'NEMSIS Opioid Bins'
+    #   parser: 'load_nemsis_bins'
+    #   data_release: 'Mar 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240318-Y2023.zip'
+    #     file_name: 'CountyOverdoseBins_2023.xlsx'
+    #     geography: 'COUNTY'
+    #     outcome: 'opioid'
+    #     start_date: '2023-01-01'
+    #     end_date: '2023-12-31'
+
+    # Monthly Bins Opioid
+    - name: 'NEMSIS Opioid Bins Monthly'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Jul 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q1.zip'
+        file_name_monthly: 'allopioid_county_tosend_2024.sas7bdat'
+        file_name_bins: 'CountyOverdoseBins_2024.xlsx'
+        geography: 'COUNTY'
+        outcome: 'opioid'
+
+    - name: 'NEMSIS Opioid Bins Monthly'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_Q2.zip'
+        file_name_monthly: 'allopioid_county_tosend_2024.sas7bdat'
+        file_name_bins: 'CountyOverdoseBins_2024.xlsx'
+        geography: 'COUNTY'
+        outcome: 'opioid'
+
+    # - name: 'NEMSIS Opioid Bins Monthly v2'
+    #   parser: 'load_nemsis_bins_monthly_v2'
+    #   data_release: 'Sep 2024'
+    #   data_provider: 'NEMSIS'
+    #   params:
+    #     zip_file: 'NEMRES-20240930.zip'
+    #     file_name_bins: 'opioidallrange.sas7bdat'
+    #     outcome: 'opioid'
+    #     yearmon: '202408'
+    #     metric: 'RankOpioidRate'
+    #     outcome: 'opioid'
+    #     geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly - 2023'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2023.zip'
+        file_name_monthly: 'allopioid_county_tosend_2023.sas7bdat'
+        file_name_bins: 'CountyOverdoseBins_2023.xlsx'
+        geography: 'COUNTY'
+        outcome: 'opioid'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - JUL 2024'
+      parser: 'load_nemsis_bins_monthly'
+      data_release: 'Aug 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_JUL.zip'
+        file_name_monthly: 'allopioid_county_tosend_2024july.sas7bdat'
+        file_name_bins: 'CountyOverdoseBins_2024July.xlsx'
+        geography: 'COUNTY'
+        outcome: 'opioid'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - AUG 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Sep 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_AUG.zip'
+        file_name_bins: 'opioidallrange.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202408'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - SEP 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_SEP.zip'
+        file_name_bins: 'opioidallrange.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202409'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - OCT 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Nov 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'NEMSIS_Monthly_county_level_data_2024_OCT.zip'
+        file_name_bins: 'opioidallrange.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202410'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - NOV 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Dec 2024'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-03.zip'
+        file_name_bins: 'opioidallrange.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202411'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - DEC 2024'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Jan 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-01-31.zip'
+        file_name_bins: 'opioidallrange.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202412'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - FEB 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'FEB 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-02-28_resubmitted.zip'
+        file_name_bins: 'opioidallrange_cp25.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202501'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - MAR 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'MAR 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-03-31.zip'
+        file_name_bins: 'opioidallrange_cp25.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202502'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - APR 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Apr 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-05.zip'
+        file_name_bins: 'opioidallrange_cp25.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202503'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - May 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'May 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-05-30.zip'
+        file_name_bins: 'opioidallrange_cp25.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202504'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - JUN 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Jun 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-06-30.zip'
+        file_name_bins: 'opioidallrange_cp25.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202505'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'NEMSIS Opioid Bins Monthly v2 - JUL 2025'
+      parser: 'load_nemsis_bins_monthly_v2'
+      data_release: 'Jul 2025'
+      data_provider: 'NEMSIS'
+      params:
+        zip_file: 'data_submission_NEMSIS_2025-08-01.zip'
+        file_name_bins: 'opioidallrange_cp25.sas7bdat'
+        outcome: 'opioid'
+        yearmon: '202506'
+        metric: 'RankOpioidRate'
+        geography: 'COUNTY'
+
+    - name: 'Bin Data of Health Verity SOC Data for ZCTA3'
+      parser: 'load_aggregated_hv_soc_bins'
+      data_release: 'Jul 2025'
+      data_provider: 'Health Verity'
+      params:
+        input_file: 'hv_aggregate_table_20250731_HV009879/data_submission_Open_Claims_HealthVerity_2025-07-31.gz.parquet'
+    - name: 'Bin Data of Health Verity SOC Data for ZCTA3'
+      parser: 'load_aggregated_hv_soc_bins_v2'
+      data_release: 'Jul 2025'
+      data_provider: 'Health Verity'
+      params:
+        input_file: 'hv_aggregate_table_20250731_HV009879/data_submission_Open_Claims_HealthVerity_2025-07-31.gz.parquet'
+
+    - name: ' ASCVD Scores'
+      parser: 'load_ascvd_bins_v2'
+      data_release: 'Jul 2025'
+      data_provider: 'Veradigm'
+      params:
+        input_file: 'data_submission_VERADIGM_2025-07.xlsx'
+    - name: ' ASCVD Scores'
+      parser: 'load_ascvd_monthly_data_bins'
+      data_release: 'Jul 2025'
+      data_provider: 'Veradigm'
+      params:
+        input_file: 'data_submission_VERADIGM_2025-07.xlsx'
+
+
+  trendlines:
+    - name: 'NEMSIS Opioid Total Trendlines'
+      parser: 'load_nemsis_trendlines'
+      data_release: 'Mar 2024'
+      data_provider: 'NEMSIS'
+      params:
+        trendline_zip_file: 'NEMRES-20240318-Y2023.zip'
+        trendline_datafile: 'opioidtrendline2223.sas7bdat'
+        county_data_2022_zip_file: 'NEMRES-20240308-Y2022.zip'
+        county_data_2022_datafile: 'allopioid_county_tosend.sas7bdat'
+        county_data_2023_zip_file: 'NEMRES-20240318-Y2023.zip'
+        county_data_2023_datafile: 'allopioid_county_tosend_2023.sas7bdat'
+        outcome: 'opioid'
+        outcome_col: 'MonthlyOpioidTotal'
+    - name: 'NEMSIS Alcohol Total Trendlines'
+      parser: 'load_nemsis_trendlines'
+      data_release: 'Mar 2024'
+      data_provider: 'NEMSIS'
+      params:
+        trendline_zip_file: 'NEMRES-20240318-Y2023.zip'
+        trendline_datafile: 'alcoholtrendline2223.sas7bdat'
+        county_data_2022_zip_file: 'NEMRES-20240308-Y2022.zip'
+        county_data_2022_datafile: 'allalcohol_county_tosend.sas7bdat'
+        county_data_2023_zip_file: 'NEMRES-20240318-Y2023.zip'
+        county_data_2023_datafile: 'allalcohol_county_tosend_2023.sas7bdat'
+        outcome: 'alcohol'
+        outcome_col: 'MonthlyAlcoholTotal'
+    - name: 'Trendline SOC HealthVerity Data'
+      parser: 'load_aggregated_hv_soc_trendline_data'
+      data_release: 'Jul 2024'
+      data_provider: 'Health Verity'
+      params:
+        input_file: 'hv_aggregate_table_20250731_HV009879/data_submission_Open_Claims_HealthVerity_2025-07-31.gz.parquet'
+
+  cb_geom_index:
+  - name: 'Geoid Index'
+    parser: 'construct_geoid_index'
+    data_release: '2020'
+    data_provider: 'Census Bureau Relationship File'
+    params:
+      states_geos_file: 'cb_2020_us_state_500k.zip'
+      county_geos_file: 'cb_2020_us_county_500k.zip'
+      relationship_file: 'tab20_zcta520_county20_natl.txt'
+
+  adjacency_edge_list:
+  - name: 'STATE Adjacency List'
+    parser: 'load_adjacency_list'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'adjacency_edge_list_state.csv'
+  - name: 'COUNTY Adjacency List'
+    parser: 'load_adjacency_list'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'adjacency_edge_list_county.csv'
+  - name: 'ZCTA3 Adjacency List'
+    parser: 'load_adjacency_list'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'adjacency_edge_list_zcta3.csv'
+  - name: 'ZCTA5 Adjacency List'
+    parser: 'load_adjacency_list'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    params:
+      input_file: 'adjacency_edge_list_zcta5.csv'
+
+  - name: 'Adjacency List Exemptions'
+    parser: 'load_adjacency_exemptions'
+    data_release: '2020'
+    data_provider: 'Census Bureau Cartographic Boundaries'
+    upsert: true
+    params:
+      local_input_file: 'adjacency_edge_list_exemptions.csv'
+
+  national:
+  - name: 'National ASCVD'
+    parser: 'load_national_ascvd_data'
+    data_release: 'Jun. 2024'
+    data_provider: 'Veradigm'
+    upsert: true
+    params:
+      aggregated: false
+  - name: 'National Aggregated ASCVD'
+    parser: 'load_national_ascvd_data'
+    data_release: 'Jun. 2024'
+    data_provider: 'Veradigm'
+    upsert: true
+    params:
+      aggregated: true
+  - name: 'National SOC'
+    parser: 'load_national_soc_data'
+    data_release: 'Sep 2024'
+    data_provider: 'Health Verity'
+    upsert: true
+    params:
+      aggregated: false
+  - name: 'National SOC Aggregated'
+    parser: 'load_national_soc_data'
+    data_release: 'Sep 2024'
+    data_provider: 'Health Verity'
+    upsert: true
+    params:
+      aggregated: true
+
+  - name: 'National NEMSIS Opioid'
+    parser: 'load_national_nemsis_data_trendlines'
+    data_release: 'Jul 2025'
+    data_provider: 'Health Verity'
+    upsert: true
+    params:
+      outcome: 'opioid'
+      zip_file: 'data_submission_NEMSIS_2025-08-01.zip'
+      file_name_trendlines: 'alltrendline2224.sas7bdat'
+      conversion_factor: 100000
+  
+  # This section is no longer needed as we get national rates now
+  # - name: 'National NEMSIS Opioid Aggregated'
+  #   parser: 'load_national_nemsis_data'
+  #   data_release: 'Aug 2024'
+  #   data_provider: 'Health Verity'
+  #   upsert: true
+  #   params:
+  #     outcome: 'opioid'
+  #     aggregated: true
+
+  - name: 'National NEMSIS Alcohol'
+    parser: 'load_national_nemsis_data_trendlines'
+    data_release: 'Jul 2025'
+    data_provider: 'Health Verity'
+    upsert: true
+    params:
+      outcome: 'alcohol'
+      zip_file: 'data_submission_NEMSIS_2025-08-01.zip'
+      file_name_trendlines: 'alltrendline2224.sas7bdat'
+      conversion_factor: 100000
+
+  # This section is no longer needed as we get national rates now
+  # - name: 'National NEMSIS Alcohol Aggregated'
+  #   parser: 'load_national_nemsis_data'
+  #   data_release: 'Aug 2024'
+  #   data_provider: 'Health Verity'
+  #   upsert: true
+  #   params:
+  #     outcome: 'alcohol'
+  #     aggregated: true
+
+  fill_nemsis_rates:
+    - name: 'Fill NEMSIS Rates'
+      parser: 'fill_nemsis_rates'
+      data_release: 'ALL'
+      data_provider: 'ALL'
+      upsert: true
+      params:
+        bin_join_params:
+          - target_table: 'nemsis_opioid'
+            rate_col: 'opioid_rate'
+            rep_value: 'midpoint'
+            rank_col: 'opioid_rate_rank'
+            rank_value_col: 'opioid_rate_rank_value'
+            measure: 'opioid_rate'
+          - target_table: 'nemsis_opioid_v2'
+            rate_col: 'opioid_rate'
+            rep_value: 'midpoint'
+            rank_col: 'opioid_rate_rank'
+            rank_value_col: 'opioid_rate_rank_value'
+            measure: 'opioid_rate'
+          - target_table: 'nemsis_alcohol'
+            rate_col: 'alcohol_rate'
+            rep_value: 'midpoint'
+            rank_col: 'alcohol_rate_rank'
+            rank_value_col: 'alcohol_rate_rank_value'
+            measure: 'alcohol_rate'
+          - target_table: 'nemsis_alcohol_v2'
+            rate_col: 'alcohol_rate'
+            rep_value: 'midpoint'
+            rank_col: 'alcohol_rate_rank'
+            rank_value_col: 'alcohol_rate_rank_value'
+            measure: 'alcohol_rate'
+
+  moving_averages:
+  - name: '6 Month Moving Average - ASCVD'
+    parser: 'load_moving_avgs'
+    data_release: 'Jun. 2024'
+    data_provider: 'Veradigm'
+    upsert: true
+    params:
+      target_table: 'ascvd_scores_v2'
+      metric_col: 'total_mean'
+      target_col: 'total_mean_6mo'
+      num_months: '6'
+  - name: '6 Month Moving Average - ASCVD Aggregated'
+    parser: 'load_moving_avgs'
+    data_release: 'Jun. 2024'
+    data_provider: 'Veradigm'
+    upsert: true
+    params:
+      target_table: 'ascvd_scores'
+      metric_col: 'total_mean'
+      target_col: 'total_mean_6mo'
+      num_months: '6'
+  - name: '6 Month Moving Average - SOC'
+    parser: 'load_moving_avgs'
+    data_release: 'Mar 2024'
+    data_provider: 'Health Verity'
+    upsert: true
+    params:
+      target_table: 'aggregated_soc_data_v2'
+      metric_col: 'any_soc_rate'
+      target_col: 'any_soc_rate_6mo'
+      num_months: '6'
+  - name: '6 Month Moving Average - SOC Aggregated'
+    parser: 'load_moving_avgs'
+    data_release: 'Mar 2024'
+    data_provider: 'Health Verity'
+    upsert: true
+    params:
+      target_table: 'aggregated_soc_data'
+      metric_col: 'any_soc_rate'
+      target_col: 'any_soc_rate_6mo'
+      num_months: '6'
+  - name: '6 Month Moving Average - Opioid'
+    parser: 'load_moving_avgs'
+    data_release: 'Nov 2024'
+    data_provider: 'NEMSIS'
+    upsert: true
+    params:
+      target_table: 'nemsis_opioid_v2'
+      metric_col: 'opioid_rate'
+      target_col: 'opioid_rate_6mo'
+      num_months: '6'
+  # - name: '6 Month Moving Average - Opioid Aggregated'
+  #   parser: 'load_moving_avgs'
+  #   data_release: 'Aug 2024'
+  #   data_provider: 'Health Verity'
+  #   upsert: true
+  #   params:
+  #     target_table: 'nemsis_opioid'
+  #     metric_col: 'opioid_rate_rank'
+  #     target_col: 'opioid_rate_rank_6mo'
+  #     num_months: '6'
+  - name: '6 Month Moving Average - Alcohol'
+    parser: 'load_moving_avgs'
+    data_release: 'Nov 2024'
+    data_provider: 'NEMSIS'
+    upsert: true
+    params:
+      target_table: 'nemsis_alcohol_v2'
+      metric_col: 'alcohol_rate'
+      target_col: 'alcohol_rate_6mo'
+      num_months: '6'
+  # - name: '6 Month Moving Average - Alcohol Aggregated'
+  #   parser: 'load_moving_avgs'
+  #   data_release: 'Aug 2024'
+  #   data_provider: 'Health Verity'
+  #   upsert: true
+  #   params:
+  #     target_table: 'nemsis_alcohol'
+  #     metric_col: 'alcohol_rate_rank'
+  #     target_col: 'alcohol_rate_rank_6mo'
+  #     num_months: '6'
+  # Bins
+  - name: '6 Month Moving Average Ranks - ASCVD Bins'
+    parser: 'load_moving_avgs_rank'
+    data_release: 'ALL'
+    data_provider: 'ALL'
+    upsert: true
+    params:
+      bin_params:
+        - outcome: 'cardio'
+          measure: 'total_mean'
+          target: 'total_mean_6mo'
+        - outcome: 'soc'
+          measure: 'any_soc_rate'
+          target: 'any_soc_rate_6mo'
+        - outcome: 'alcohol'
+          measure: 'alcohol_rate'
+          target: 'alcohol_rate_6mo'
+        - outcome: 'opioid'
+          measure: 'opioid_rate'
+          target: 'opioid_rate_6mo'
+      bin_join_params:
+        - target_table: 'aggregated_soc_data'
+          source_col: 'any_soc_rate_6mo'
+          target_rank_col: 'any_soc_rate_6mo_rank'
+          target_rank_value_col: 'any_soc_rate_6mo_rank_value'
+          rank_match: false
+        - target_table: 'aggregated_soc_data_v2'
+          source_col: 'any_soc_rate_6mo'
+          target_rank_col: 'any_soc_rate_6mo_rank'
+          target_rank_value_col: 'any_soc_rate_6mo_rank_value'
+          rank_match: false
+        - target_table: 'ascvd_scores'
+          source_col: 'total_mean_6mo'
+          target_rank_col: 'total_mean_6mo_rank'
+          target_rank_value_col: 'total_mean_6mo_rank_value'
+          rank_match: false
+        - target_table: 'ascvd_scores_v2'
+          source_col: 'total_mean_6mo'
+          target_rank_col: 'total_mean_6mo_rank'
+          target_rank_value_col: 'total_mean_6mo_rank_value'
+          rank_match: false
+        - target_table: 'nemsis_alcohol_v2'
+          source_col: 'alcohol_rate_6mo'
+          target_rank_col: 'alcohol_rate_6mo_rank'
+          target_rank_value_col: 'alcohol_rate_6mo_rank_value'
+          rank_match: false
+        - target_table: 'nemsis_opioid_v2'
+          source_col: 'opioid_rate_6mo'
+          target_rank_col: 'opioid_rate_6mo_rank'
+          target_rank_value_col: 'opioid_rate_6mo_rank_value'
+          rank_match: false

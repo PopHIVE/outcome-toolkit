@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "playwright.config.*"
+  ],
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "types": ["node", "happy-dom"]
+  }
+}

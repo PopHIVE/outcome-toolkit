@@ -1,0 +1,7 @@
+# Dagster Cache
+dagster/storage/*
+!dagster/storage/.gitkeep
+
+# PgAdmin
+pgadmin/*
+!pgadmin/.gitkeep

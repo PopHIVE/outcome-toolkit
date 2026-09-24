@@ -1,0 +1,72 @@
+# Source: https://github.com/docker/awesome-compose/blob/master/nginx-wsgi-flask
+proxy_cache_path /tmp/cache levels=1:2 keys_zone=api-cache:10m max_size=500m inactive=7200m use_temp_path=off;
+
+server {
+  listen "$NGINX_LISTEN_PORT";
+
+  # Time out settings
+  keepalive_timeout 180;
+  proxy_read_timeout 180;
+  proxy_connect_timeout 180;
+  proxy_send_timeout 180; 
+
+  location / {
+
+    limit_except GET { deny all; }
+
+    default_type application/json;
+    return 299 '{"message": "DEPRECATED: This is an API only service."}';
+
+    include /etc/nginx/conf.d/snippets/cors-sites.conf;
+  }
+
+  location $API_HOST_URI {
+  	limit_except GET POST OPTIONS { deny all; }
+
+	  add_header X-Cache-Status $upstream_cache_status;
+
+	  proxy_max_temp_file_size 0;
+    proxy_cache api-cache;
+    proxy_cache_lock on;
+    proxy_cache_valid  200  7200m;
+    proxy_cache_use_stale updating;
+    proxy_cache_methods GET POST;
+    proxy_cache_key "$request_uri|$request_body";
+
+    client_max_body_size 24m;
+    proxy_buffers 128 12m;
+    proxy_buffer_size 48m;
+    proxy_busy_buffers_size 48m;
+    client_body_buffer_size 48m;
+
+    proxy_pass http://$BACKEND_SERVER_ADDR/api/;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    include /etc/nginx/conf.d/snippets/cors-sites.conf;
+
+  }
+
+  location /health-check {
+
+  	limit_except GET { deny all; }
+
+    add_header Content-Type text/plain;
+    return 200 "success";
+
+    include /etc/nginx/conf.d/snippets/cors-sites.conf;
+  }
+
+  location /version {
+
+    limit_except GET { deny all; }
+
+    default_type application/json;
+    return 200 '{"version": "$OUTCOME_TOOLKIT_RELEASE", "dataVersion": "$DATA_BUNDLE", "tag": "$TAG"}';
+
+    include /etc/nginx/conf.d/snippets/cors-sites.conf;
+  }
+}

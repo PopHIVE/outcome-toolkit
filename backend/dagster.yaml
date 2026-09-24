@@ -1,0 +1,17 @@
+storage:
+  postgres:
+    postgres_db:
+      hostname: postgres
+      username:
+        env: DATASTORE_USER
+      password:
+        env: DATASTORE_PASSWORD
+      db_name:
+        env: DATASTORE_DB
+      port: 5432
+telemetry:
+  enabled: false
+# run_retries:
+#   enabled: true
+#   max_retries: 3
+#   retry_on_asset_or_op_failure: true

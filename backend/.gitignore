@@ -1,0 +1,9 @@
+# Build
+build
+
+# Data Files
+raw
+staging
+mnt
+test
+cache

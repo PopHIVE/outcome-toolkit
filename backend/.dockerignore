@@ -1,0 +1,5 @@
+build
+bundles/*.zip
+
+# Important
+!bundles/data_bundle_v0.32.0.zip

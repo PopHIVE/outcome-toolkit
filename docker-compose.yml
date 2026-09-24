@@ -1,0 +1,189 @@
+name: outcome-toolkit-compose
+services:
+  nginx:
+    container_name: nginx_container
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-nginx:${TAG}
+    platform: linux/x86_64
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+      # WARNING: If you update this section make sure to update the push.sh script.
+      # PAIRED FILE: 'push.sh'
+      args:
+        DATA_BUNDLE: ${DATA_BUNDLE}
+        TAG: ${TAG}
+        OUTCOME_TOOLKIT_RELEASE: ${OUTCOME_TOOLKIT_RELEASE}
+    restart: always
+    env_file:
+      - .env
+      - .env.secrets
+    # WARNING: If you update this section make sure to update the task definition template.
+    # PAIRED FILE: 'deployments/outcome-toolkit-all-task-definition-template.json'
+    environment:
+      - NGINX_LISTEN_PORT=${NGINX_LISTEN_PORT}
+      - BACKEND_SERVER_ADDR=${BACKEND_HOST}:${BACKEND_PORT}
+      - FRONTEND_SERVER_ADDR=${FRONTEND_HOST}:${FRONTEND_PORT}
+      - NGINX_CORS_POLICY=${NGINX_CORS_POLICY}
+      - API_HOST_URI=${API_HOST_URI}
+      - DEPLOYMENT_ENV=${DEPLOYMENT_ENV}
+    networks:
+      - outcome-toolkit-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:${NGINX_LISTEN_PORT}"
+
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    command: npm run dev
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-frontend:${TAG}
+    env_file:
+      - .env
+      - .env.secrets
+    networks:
+      - outcome-toolkit-network
+    volumes:
+      - ./frontend/src:/app/src
+
+
+  backend:
+    container_name: backend_container
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-backend:${TAG}
+    build:
+      context: backend
+      dockerfile: Dockerfile
+      # WARNING: If you update this section make sure to update the push.sh script.
+      # PAIRED FILE: 'push.sh'
+      args:
+        DATA_BUNDLE: ${DATA_BUNDLE}
+        # enables hot reloading
+        RUN_OPTION: --reload
+    env_file:
+      - .env
+      - .env.secrets
+    # WARNING: If you update this section make sure to update the task definition template.
+    # PAIRED FILE: 'deployments/outcome-toolkit-all-task-definition-template.json'
+    environment:
+      - REBUILD_DB=${REBUILD_DB}
+      - RUN_TESTS=${RUN_TESTS}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+      - DEPLOYMENT_ENV=${DEPLOYMENT_ENV}
+    networks:
+      - outcome-toolkit-network
+    volumes:
+      - ./backend/app:/app/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  datastore:
+    container_name: dagster_container
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-datastore:${TAG}
+    build:
+      context: backend
+      dockerfile: datastore.Dockerfile
+      args:
+        DATA_BUNDLE: ${DATA_BUNDLE}
+    env_file:
+      - .env
+      - .env.secrets
+    # WARNING: If you update this section make sure to update the task definition template.
+    # PAIRED FILE: 'deployments/outcome-toolkit-all-task-definition-template.json' 
+    ports:
+      - "3000:3000"
+    environment:
+      - DATASTORE_USER=${DATASTORE_USER}
+      - DATASTORE_DB=${DATASTORE_DB}
+      - DATASTORE_PASSWORD=${DATASTORE_PASSWORD}
+      - DEPLOYMENT_ENV=${DEPLOYMENT_ENV}
+    volumes:
+      - ./backend/datastore:/opt/dagster/app/datastore:ro
+      - dagster:/mnt/dagster/storage:rw
+      # - ./backend/bundles:/opt/dagster/app/bundles:ro
+      # - ./mnt/dagster/storage:/mnt/dagster/storage:rw # Causes issues with CI - storage files are created as root on host system 
+    networks:
+      - outcome-toolkit-network
+
+  postgres:
+    container_name: pg_container
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-postgres:${TAG}
+    build:
+      context: postgres
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+      - .env.secrets
+    # WARNING: If you update this section make sure to update the task definition template.
+    # PAIRED FILE: 'deployments/outcome-toolkit-all-task-definition-template.json'    
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - outcome-toolkit-network
+
+  rstudio:
+    container_name: rstudio_container
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-rstudio:${TAG}
+    build:
+      context: rstudio
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+      - .env.secrets
+    # WARNING: If you update this section make sure to update the task definition template.
+    # PAIRED FILE: 'deployments/outcome-toolkit-all-task-definition-template.json' 
+    ports:
+      - "8787:8787"
+    volumes:
+      - ./analysis:/home/rstudio/analysis:rw
+    environment:
+      - PASSWORD=${RSTUDIO_PASSWORD}
+      - DATASTORE_USER=${DATASTORE_USER}
+      - DATASTORE_DB=${DATASTORE_DB}
+      - DATASTORE_PASSWORD=${DATASTORE_PASSWORD}
+    networks:
+      - outcome-toolkit-network
+
+  pgadmin:
+    container_name:  pgadmin_container
+    image: ${DOCKER_REGISTRY}/outcome-toolkit-pgadmin:${TAG}
+    build:
+      context: pgadmin
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+      - .env.secrets
+    # WARNING: If you update this section make sure to update the task definition template.
+    # PAIRED FILE: 'deployments/outcome-toolkit-all-task-definition-template.json' 
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin:rw
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - outcome-toolkit-network
+
+# WARNING: Volumes currently not available in our ECS configuration.
+volumes:
+  pgadmin:
+  dagster:
+
+networks:
+  outcome-toolkit-network:
+    driver: bridge
