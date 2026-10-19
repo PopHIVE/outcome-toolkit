@@ -29,3 +29,6 @@ public/userguide*.png
 e2e/userguide/userguide.spec.ts-snapshots/
 test-results/
 playwright-report/
+
+# Downloaded inputs for scripts/build-geography.mjs
+.geo-cache/

@@ -135,7 +135,8 @@ export const useSelectionStore = defineStore("outcome-toolkit-selection", {
       }
       // NOTE: As of May 2025, always select X month old data point.
       const inverseMonthsofUncertainty = MONTHS_OF_UNCERTAINTY * -1;
-      this.currentTimeBin = timeBins.at(inverseMonthsofUncertainty);
+      // Clamp so sources with fewer months (e.g. a single snapshot) still get a bin.
+      this.currentTimeBin = timeBins.at(Math.max(inverseMonthsofUncertainty, -timeBins.length));
     },
   },
 });

@@ -13,8 +13,16 @@ import {
   APIV2DetailsSpec,
   type APIV2BinsType,
   type AreaFeatureCollection,
+  type OutcomeKeyType,
   api2TargetPayout,
 } from "@/types";
+import {
+  dataDetailsFromIngest,
+  loadIngestOutcome,
+  loadLocalDemographics,
+  loadLocalGeometry,
+  loadLocalTree,
+} from "@/stores/ingestData";
 import {
   API_GEOMETRIES,
   API_TREE_URL,
@@ -24,6 +32,7 @@ import {
   API_V2_DETAILS,
   COUNTRY_USA,
   API_DATA_DETAILS,
+  DATA_SOURCE,
 } from "@/util/Consts";
 import { makeTimeBin } from "@/util/dateUtils";
 import { midGranularity } from "@/util/mapUtils";
@@ -50,8 +59,66 @@ export function okOrThrow(res: Response): Response {
   return res;
 }
 
+/**
+ * Load everything from the PopHIVE Ingest parquet files + static geography instead of the backend API.
+ * See stores/ingestData.ts.
+ */
+function doIngestFetches() {
+  const geoStore = useGeometryStore();
+  const dataStore = useDataStore();
+
+  loadLocalTree()
+    .then((data) => {
+      dataStore.areasByState = _.map(data, (areas, mid) => ({ areas, mid }));
+    })
+    .catch((err) => console.error("Problem loading area list.", err));
+
+  loadLocalDemographics()
+    .then((demoData) => {
+      dataStore.displayNames = demoData.metadata.display_names;
+      dataStore.demographicsCategories = demoData.metadata.demographic_categories;
+      dataStore.demographicsSource = demoData.metadata.source;
+      dataStore.areaDemographics = demoData.data;
+      dataStore._dataIsReady.demographics = true;
+    })
+    .catch((err) => console.error("Problem loading area demographics.", err));
+
+  const latestDates: Partial<Record<OutcomeKeyType, Date>> = {};
+  Promise.all(
+    _.map(OUTCOME_DATA, (outcome) =>
+      loadIngestOutcome(outcome.key)
+        .then(({ details, bins, latestDate }) => {
+          const metricKey = outcome.metric.key;
+          dataStore._metricBins[outcome.key] = bins;
+          dataStore._timeBins[metricKey] = _.map(_.keys(bins[metricKey]), makeTimeBin);
+          _.merge(dataStore._overviewData, details);
+          latestDates[outcome.key] = latestDate;
+          dataStore.setDataIsReady(outcome.key, true);
+        })
+        .catch((err) => console.error("Problem loading Ingest data for outcome", outcome.key, err))
+    )
+  ).then(() => {
+    dataStore._dataDetails = dataDetailsFromIngest(latestDates);
+    useSelectionStore().chooseBestTimeBin({ metricKey: useNavigationStore().metric().key });
+  });
+
+  for (const key of GRANULARITIES) {
+    if (key === "COUNTRY") {
+      continue;
+    }
+    loadLocalGeometry(key)
+      .then((json) => {
+        geoStore[key] = json;
+      })
+      .catch((err) => console.error(`Couldn't load ${key} geometry.`, err));
+  }
+}
+
 // TODO: get data at app load in a better way.
 export function doFetches() {
+  if (DATA_SOURCE === "ingest") {
+    return doIngestFetches();
+  }
   const geoStore = useGeometryStore();
   const dataStore = useDataStore();
 

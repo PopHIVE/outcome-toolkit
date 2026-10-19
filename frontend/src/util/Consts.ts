@@ -46,6 +46,11 @@ const maybeHost =
   "env" in import.meta ? import.meta.env?.VITE_API_HOST : process?.env?.VITE_API_HOST;
 export const API_HOST = maybeHost ? maybeHost : "";
 
+/** Where outcome data comes from: "ingest" (PopHIVE Ingest parquet files, the default) or "api" (Flask backend). */
+const maybeDataSource =
+  "env" in import.meta ? import.meta.env?.VITE_DATA_SOURCE : process?.env?.VITE_DATA_SOURCE;
+export const DATA_SOURCE: "ingest" | "api" = maybeDataSource === "api" ? "api" : "ingest";
+
 // API Routes
 export const API_GEOMETRIES = (geo_type: string) => `${API_HOST}/api/${geo_type}/geometries`;
 export const API_TARGET_PAYOUTS_URL = `${API_HOST}/api/v2/targets`;

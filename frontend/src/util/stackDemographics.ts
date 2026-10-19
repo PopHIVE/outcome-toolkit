@@ -29,6 +29,10 @@ export function stackDemographics(demographicKey: DemographicKeyType): Demograph
       // Handle mismatch between demographic key and api response key
       let categoryKey: string;
       demographicKey == "re" ? (categoryKey = "race/ethnicity") : (categoryKey = demographicKey);
+      // Not every data source provides demographic breakdowns.
+      if (!dataStore.demographicsCategories[categoryKey]) {
+        return;
+      }
       //for each band within a given category, create new demographics stack or add to existing value
       dataStore.demographicsCategories[categoryKey].bands.forEach((bandName) => {
         // displayName: lookup full name of the bandName in displayNames, format for table to just be range

@@ -1,6 +1,7 @@
 import type { SpatialGranularity } from "@/stores/SPATIAL_GRANULARITY_DATA";
 import type { MetricKeyType, OutcomeKeyType } from "@/types";
 import { compactNumber, compactPercent } from "@/util/formatters";
+import { DATA_SOURCE } from "@/util/Consts";
 
 export type OutcomeType = {
   // Database key
@@ -249,7 +250,8 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
     metric: {
       key: "any_soc_rate",
       keyT6mo: "any_soc_rate_6mo",
-      hasMetricValues: true,
+      // Ingest maternal data only has binned ranges, not point values.
+      hasMetricValues: DATA_SOURCE === "api",
       label:
         "Rate of severe obstetric complications (SOC) during the delivery hospitalization and 60 days postpartum per 10,000 deliveries (open claims only)",
       shortLabel: "SOC per 10,000 deliveries (open claims)",
