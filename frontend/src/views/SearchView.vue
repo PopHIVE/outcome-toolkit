@@ -74,9 +74,9 @@ const geoStyler = computed(() => {
     </section>
 
     <section class="to-search-results">
-      <a class="btn btn-info px-5 text-black" href="/results">
+      <RouterLink class="btn btn-info px-5 text-black" to="/results">
         Proceed with selecting a region <i class="bi-arrow-right"></i>
-      </a>
+      </RouterLink>
     </section>
     <section class="data-usage">{{ navStore.metric().dataUsage }}</section>
   </main>

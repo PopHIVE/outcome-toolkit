@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { OUTCOME_DATA } from "@/stores/OUTCOME_DATA";
+import { DATA_SOURCE } from "@/util/Consts";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 
@@ -8,6 +9,8 @@ const router = useRouter();
 const dataReleaseNotesHtml = ref("");
 
 onMounted(() => {
+  // Release notes are served by the backend; the static (Ingest) build has none.
+  if (DATA_SOURCE !== "api") return;
   fetch("/api/v2/data-release-notes")
     .then((res) => {
       return res.json();
@@ -226,7 +229,7 @@ function downloadMeasureDefinition(key: string) {
   const downloadLink = document.createElement("a");
   downloadLink.setAttribute("hidden", "true");
   downloadLink.href = filename;
-  downloadLink.download = filename;
+  downloadLink.download = filename.split("/").pop() ?? filename;
   downloadLink.click();
 
   // cleanup
@@ -252,7 +255,7 @@ function downloadCoverageByState(key: string) {
   const downloadLink = document.createElement("a");
   downloadLink.setAttribute("hidden", "true");
   downloadLink.href = filename;
-  downloadLink.download = filename;
+  downloadLink.download = filename.split("/").pop() ?? filename;
   downloadLink.click();
 
   // cleanup

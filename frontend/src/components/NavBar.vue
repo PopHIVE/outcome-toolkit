@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { APIV2VersionSpec, type APIV2VersionType } from "@/types";
+import { DATA_SOURCE } from "@/util/Consts";
 import { useFetch } from "@vueuse/core";
 import { onMounted, ref } from "vue";
 
+// The static (Ingest) build has no backend, so skip the version, login, and project features.
+const hasBackend = DATA_SOURCE === "api";
+
 const { data: version_data } = useFetch("/version", {
+  immediate: hasBackend,
   onFetchError: (ctx) => {
     console.error("Couldn't load application version data.");
     return ctx;
@@ -44,15 +49,17 @@ function getLoginInfo() {
     });
 }
 
-onMounted(getLoginInfo);
+onMounted(() => {
+  if (hasBackend) getLoginInfo();
+});
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg">
-    <a class="nav-item logo" href="/">
+    <RouterLink class="nav-item logo" to="/">
       <span class="logo-text" title="Outcome Toolkit Home">Outcome Toolkit</span>
       <label class="screen-reader-only">Home</label>
-    </a>
+    </RouterLink>
     <button
       aria-controls="navbarNavContent"
       aria-expanded="false"
@@ -71,7 +78,7 @@ onMounted(getLoginInfo);
     </div>
     <div class="collapse navbar-collapse navbar-links" id="navbarNavContent">
       <div class="nav-item">
-        <a href="/">Home</a>
+        <RouterLink to="/">Home</RouterLink>
       </div>
       <div class="nav-item dropdown">
         <a
@@ -84,26 +91,26 @@ onMounted(getLoginInfo);
           About
         </a>
         <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-          <li class="dropdown-item"><a href="/about">About Outcome Toolkit</a></li>
-          <li class="dropdown-item"><a href="/userguide">User Guide</a></li>
-          <li class="dropdown-item"><a href="/faq">FAQ</a></li>
-          <li class="dropdown-item"><a href="/aboutdata">About The Data</a></li>
+          <li class="dropdown-item"><RouterLink to="/about">About Outcome Toolkit</RouterLink></li>
+          <li class="dropdown-item"><RouterLink to="/userguide">User Guide</RouterLink></li>
+          <li class="dropdown-item"><RouterLink to="/faq">FAQ</RouterLink></li>
+          <li class="dropdown-item"><RouterLink to="/aboutdata">About The Data</RouterLink></li>
         </ul>
       </div>
       <div class="nav-item">
-        <a href="/search">Search</a>
+        <RouterLink to="/search">Search</RouterLink>
       </div>
       <div class="nav-item">
-        <a href="/results">Results</a>
+        <RouterLink to="/results">Results</RouterLink>
       </div>
       <div class="nav-item">
-        <a href="/paymentrates">Payment Rates</a>
+        <RouterLink to="/paymentrates">Payment Rates</RouterLink>
       </div>
       <div class="nav-item">
-        <a href="/healthoutcomes">Health Outcomes</a>
+        <RouterLink to="/healthoutcomes">Health Outcomes</RouterLink>
       </div>
 
-      <div class="nav-item dropdown">
+      <div v-if="hasBackend" class="nav-item dropdown">
         <a
           class="dropdown-toggle"
           href="#"
@@ -115,11 +122,13 @@ onMounted(getLoginInfo);
         </a>
         <ul class="dropdown-menu last" aria-labelledby="aboutDropdown">
           <li class="dropdown-item">
-            <a href="/protected/projects"> {{ isUserLoggedIn ? "My Projects" : "Log In" }}</a>
+            <RouterLink to="/protected/projects">
+              {{ isUserLoggedIn ? "My Projects" : "Log In" }}</RouterLink
+            >
           </li>
           <!-- TODO: Move the invite team members to project page after updating with 269 code -->
           <li class="dropdown-item" v-if="isUserLoggedIn">
-            <a href="/invitemember">Invite Team Members</a>
+            <RouterLink to="/invitemember">Invite Team Members</RouterLink>
           </li>
         </ul>
       </div>

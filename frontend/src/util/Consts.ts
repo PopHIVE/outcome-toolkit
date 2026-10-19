@@ -46,9 +46,23 @@ const maybeHost =
   "env" in import.meta ? import.meta.env?.VITE_API_HOST : process?.env?.VITE_API_HOST;
 export const API_HOST = maybeHost ? maybeHost : "";
 
+/**
+ * Read a build-time env var. Vite inlines `import.meta.env` when bundling (so it can't be feature-tested with
+ * `"env" in import.meta`); under Playwright/Node it is undefined and we fall back to process.env.
+ */
+function buildEnv(key: "BASE_URL" | "VITE_DATA_SOURCE"): string | undefined {
+  return (
+    import.meta.env?.[key] ?? (typeof process !== "undefined" ? process.env?.[key] : undefined)
+  );
+}
+
+/** URL for a file in public/, respecting the deploy base path (e.g. "/outcome-toolkit/" on GitHub Pages). */
+export function publicPath(path: string): string {
+  return `${buildEnv("BASE_URL") ?? "/"}${path.replace(/^\//, "")}`;
+}
+
 /** Where outcome data comes from: "ingest" (PopHIVE Ingest parquet files, the default) or "api" (Flask backend). */
-const maybeDataSource =
-  "env" in import.meta ? import.meta.env?.VITE_DATA_SOURCE : process?.env?.VITE_DATA_SOURCE;
+const maybeDataSource = buildEnv("VITE_DATA_SOURCE");
 export const DATA_SOURCE: "ingest" | "api" = maybeDataSource === "api" ? "api" : "ingest";
 
 // API Routes

@@ -276,7 +276,7 @@ const geoStyler = computed(() => {
   <footer class="page-footer">
     <p>
       For more information on data sources, limitations, and calculations, please see our
-      <a href="/aboutdata">About the Data</a> page.
+      <RouterLink to="/aboutdata">About the Data</RouterLink> page.
     </p>
     <p>
       {{ navStore.metric().dataUsage }}

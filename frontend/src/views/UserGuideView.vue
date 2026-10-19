@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { publicPath } from "@/util/Consts";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -35,7 +36,7 @@ const router = useRouter();
           <p>Select the “Get Started” button to go to the next page.</p>
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug1.png"
+            :src="publicPath('outcome_toolkit_ug1.png')"
             alt="User guide Home page image with Get Started button to go to the Search page"
             aria-hidden />
           <h3>Step 2: Select a health outcome.</h3>
@@ -49,7 +50,7 @@ const router = useRouter();
           </p>
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug2.png"
+            :src="publicPath('outcome_toolkit_ug2.png')"
             alt="User guide Search page image with Outcome buttons and Proceed button to go to the Results page"
             aria-hidden />
           <h3>Step 3: Define the target area.</h3>
@@ -59,7 +60,7 @@ const router = useRouter();
           </p>
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug3.png"
+            :src="publicPath('outcome_toolkit_ug3.png')"
             alt="User guide Results page image indicating the ability to select the state to evaluate"
             aria-hidden />
           <h3>Step 4: Evaluate area suitability.</h3>
@@ -95,13 +96,13 @@ const router = useRouter();
           </p>
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug4.png"
+            :src="publicPath('outcome_toolkit_ug4.png')"
             alt="User guide Results page image indicating the ability to select the area using the list or the map"
             aria-hidden />
           <br />
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug5.png"
+            :src="publicPath('outcome_toolkit_ug5.png')"
             alt="User guide Results page image indicating that metrics are displayed when an area is selected"
             aria-hidden />
           <p>
@@ -110,7 +111,7 @@ const router = useRouter();
           </p>
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug6.png"
+            :src="publicPath('outcome_toolkit_ug6.png')"
             alt="User guide Results page image indicating the ability to select the state to evaluate"
             aria-hidden />
           <h3>Step 5: Export report on defined target area.</h3>
@@ -120,7 +121,7 @@ const router = useRouter();
           </p>
           <img
             class="mb-3 ug-image"
-            src="/outcome_toolkit_ug7.png"
+            :src="publicPath('outcome_toolkit_ug7.png')"
             alt="User guide Results page image indicating the Export buttons to export the results"
             aria-hidden />
         </div>

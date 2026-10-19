@@ -1,7 +1,7 @@
 import type { SpatialGranularity } from "@/stores/SPATIAL_GRANULARITY_DATA";
 import type { MetricKeyType, OutcomeKeyType } from "@/types";
 import { compactNumber, compactPercent } from "@/util/formatters";
-import { DATA_SOURCE } from "@/util/Consts";
+import { DATA_SOURCE, publicPath } from "@/util/Consts";
 
 export type OutcomeType = {
   // Database key
@@ -88,8 +88,8 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       <li><a href="https://www.cdc.gov/alcohol/excessive-drinking-data/">Data on Excessive Drinking | CDC</a></li>
       <li><a href="https://www.cdc.gov/alcohol/fact-sheets/states/excessive-alcohol-use-united-states.html">Addressing Excessive Alcohol Use: State Fact Sheets (cdc.gov)</a></li>
     </ol>`,
-    icon: "/iv_bag.svg",
-    image: "/alcohol.jpg",
+    icon: publicPath("/iv_bag.svg"),
+    image: publicPath("/alcohol.jpg"),
     key: "alcohol",
     label: "Alcohol-Related Health Harms",
     payoutTableTargetHeader: " in rate of EMS encounters",
@@ -108,7 +108,9 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       label:
         "Rate of EMS patient encounters for alcohol-related emergencies per 100,000 population",
       shortLabel: "Alcohol-related EMS encounters per 100,000",
-      definitions: "/Outcome Toolkit Program_Alcohol Related Health Harms_Measure Definition.xlsx",
+      definitions: publicPath(
+        "/Outcome Toolkit Program_Alcohol Related Health Harms_Measure Definition.xlsx"
+      ),
       coverageByState: "",
       minRank: 5,
       dataUsage:
@@ -138,8 +140,8 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8351755/">2019 ACC/AHA Guideline on the Primary Prevention of Cardiovascular Disease: Executive Summary - PMC (nih.gov) </a></li>
       <li><a href="https://www.heart.org/en/professional/quality-improvement/ascvd">ASCVD | American Heart Association</a></li>
     </ol>`,
-    icon: "/heart.svg",
-    image: "/cardio.jpg",
+    icon: publicPath("/heart.svg"),
+    image: publicPath("/cardio.jpg"),
     key: "cardio",
     label: "Heart Attack and Stroke Risk",
     payoutTableTargetHeader: " in ASCVD Risk Score",
@@ -186,8 +188,8 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       <li><a href="https://www.cdc.gov/overdose-prevention/">Opioid Use Disorder | Feature Topics | Drug Overdose (cdc.gov)</a></li>
       <li><a href="https://pubmed.ncbi.nlm.nih.gov/30896911/">Medications for Opioid Use Disorder Save Lives - PubMed (nih.gov)</a></li>
     </ol>`,
-    icon: "/pills.svg",
-    image: "/opioid.jpg",
+    icon: publicPath("/pills.svg"),
+    image: publicPath("/opioid.jpg"),
     key: "opioid",
     label: "Opioid Overdose",
     populationTarget: 500_000,
@@ -215,7 +217,7 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       dataSource: "NEMSIS",
       dataUsage:
         "Data on Opioid Overdose Incidents is provided by National Highway Traffic Safety Administration (NHTSA), National Emergency Medical Services Information System (NEMSIS). The content reproduced from the NEMSIS Database remains the property of the National Highway Traffic Safety Administration (NHTSA). The National Highway Traffic Safety Administration is not responsible for any claims arising from works based on the original Data, Text, Tables, or Figures.",
-      definitions: "/Outcome Toolkit Program_Opioid Overdose_Measure Definition.xlsx",
+      definitions: publicPath("/Outcome Toolkit Program_Opioid Overdose_Measure Definition.xlsx"),
       coverageByState: "",
       minRank: 5,
       timeRange: "Jan. 2023 - Dec. 2023",
@@ -235,8 +237,8 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       <li><a href="https://archive.cdc.gov/#/details?url=https://www.cdc.gov/media/releases/2022/p0919-pregnancy-related-deaths.html">Four in 5 pregnancy-related deaths in the U.S. are preventable | CDC Online Newsroom | CDC</a></li>
       <li><a href="https://ecqi.healthit.gov/sites/default/files/SevereObstetricComplications%20eCQM_Methodology%20Report%20-%20Dec%202022.pdf">SOC eCQM Methodology Report (healthit.gov)</a></li>
     </ol>`,
-    icon: "/pregnant_person.svg",
-    image: "/soc.jpg",
+    icon: publicPath("/pregnant_person.svg"),
+    image: publicPath("/soc.jpg"),
     key: "soc",
     label: "Maternal Health",
     payoutTableTargetHeader: " in rate of SOCs",

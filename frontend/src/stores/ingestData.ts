@@ -119,7 +119,9 @@ export async function loadIngestOutcome(outcomeKey: OutcomeKeyType): Promise<Ing
     (r) => r.geography_type === src.geoType || r.geography_type === "national"
   );
   if (outcomeKey === "cardio") {
-    rows = rows.filter((r) => r.age === "Overall" && r.race_ethnicity === "Overall" && r.sex === "Overall");
+    rows = rows.filter(
+      (r) => r.age === "Overall" && r.race_ethnicity === "Overall" && r.sex === "Overall"
+    );
   }
 
   const latestDate = _.maxBy(rows, (r) => r.time.valueOf())!.time;
@@ -132,14 +134,19 @@ export async function loadIngestOutcome(outcomeKey: OutcomeKeyType): Promise<Ing
 
     if (outcomeKey === "cardio") {
       // ascvd_risk is a percentage (e.g. 5.1); the app's percent formatter expects a fraction.
-      const withValues = timeRows.map((r) => ({ mid: rowMid(r, src.prefix)!, value: num(r.ascvd_risk) }));
+      const withValues = timeRows.map((r) => ({
+        mid: rowMid(r, src.prefix)!,
+        value: num(r.ascvd_risk),
+      }));
       const local = withValues.filter((r) => r.mid !== COUNTRY_USA && r.value !== null);
       // Deciles across areas, as the backend did with pd.qcut(..., 10).
       const sorted = local.map((r) => r.value! / 100).sort((a, b) => a - b);
       const q = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
       const edges = _.range(11).map((i) => (i === 10 ? sorted[sorted.length - 1] : q(i / 10)));
       binsByTime[timeBin] = _.range(10).map((rank) => {
-        const inBin = sorted.filter((v) => v >= edges[rank] && (rank === 9 ? v <= edges[10] : v < edges[rank + 1]));
+        const inBin = sorted.filter(
+          (v) => v >= edges[rank] && (rank === 9 ? v <= edges[10] : v < edges[rank + 1])
+        );
         return {
           rank,
           rank_value: BIN_LABELS[rank],
@@ -215,7 +222,9 @@ export function dataDetailsFromIngest(
 async function getLocalJSON<T>(name: string): Promise<T> {
   const res = await fetch(`${LOCAL_DATA_URL}/${name}`);
   if (!res.ok) {
-    throw new Error(`${res.status} fetching ${name}. Run "node scripts/build-geography.mjs" in frontend/.`);
+    throw new Error(
+      `${res.status} fetching ${name}. Run "node scripts/build-geography.mjs" in frontend/.`
+    );
   }
   return res.json();
 }
@@ -231,7 +240,8 @@ export async function loadLocalDemographics(): Promise<APIV2DemographicsType> {
   const data = await getLocalJSON<APIV2DemographicsType["data"]>("areas.json");
   return {
     metadata: {
-      source: "Population: PopHIVE Ingest bundle_health_outcomes denominators. Geography: US Census Bureau.",
+      source:
+        "Population: PopHIVE Ingest bundle_health_outcomes denominators. Geography: US Census Bureau.",
       demographic_categories: {},
       display_names: {},
     },

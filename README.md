@@ -16,6 +16,17 @@ information on specific outcomes, coupled with demographics from US Census data.
   - [Load Testing](#load-testing)
 - [General Links + Resources](#general-links--resources)
 
+## Static site (GitHub Pages)
+
+The frontend can run without the backend. By default it loads outcome data from the
+[PopHIVE Ingest `bundle_health_outcomes`](https://github.com/PopHIVE/Ingest/tree/main/data/bundle_health_outcomes)
+parquet files at page load, and geography from `frontend/public/local-data/` (built by
+`node frontend/scripts/build-geography.mjs`). Pushing to `main` builds and deploys it with
+`.github/workflows/deploy-pages.yml`.
+
+To preview locally: `cd frontend && npm ci && npm run dev`. Set `VITE_DATA_SOURCE=api` to use the original backend
+instead. Login-only features (projects, invites) and payout targets require the backend.
+
 ## Getting Started
 
 ### Install dependencies

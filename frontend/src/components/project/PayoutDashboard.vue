@@ -3,7 +3,7 @@ import CommonText from "@/components/common/CommonText.vue";
 import PaymentRateTable from "@/components/common/PaymentRateTable.vue";
 import ValueBox from "@/components/common/ValueBox.vue";
 import { useProjectStore } from "@/stores/project";
-import { LOADING_STRING, LOCAL_STORAGE_STEPS_SHOWN } from "@/util/Consts";
+import { LOADING_STRING, LOCAL_STORAGE_STEPS_SHOWN, publicPath } from "@/util/Consts";
 import {
   compareWords,
   payoutFormatter,
@@ -103,7 +103,7 @@ const skipTo = (index: number) => {
                 <div class="text-center mx-3">
                   <img
                     v-if="stats"
-                    :src="`/baseline-${stats.outcomeKey}.png`"
+                    :src="publicPath(`baseline-${stats.outcomeKey}.png`)"
                     class="img-fluid mb-2"
                     width="180"
                     height="180"
@@ -119,7 +119,7 @@ const skipTo = (index: number) => {
                 </div>
                 <div class="text-center mx-3">
                   <img
-                    :src="`/project-${stats.outcomeKey}.png`"
+                    :src="publicPath(`project-${stats.outcomeKey}.png`)"
                     class="img-fluid mb-2"
                     width="180"
                     height="180"
@@ -154,7 +154,7 @@ const skipTo = (index: number) => {
                 <div class="d-grid cols-2-equal">
                   <div class="text-center mx-3">
                     <img
-                      src="/placeholder.png"
+                      :src="publicPath('placeholder.png')"
                       class="img-fluid mb-2"
                       width="180"
                       height="180"
@@ -188,7 +188,7 @@ const skipTo = (index: number) => {
 
                   <div class="text-center mx-3">
                     <img
-                      src="/placeholder.png"
+                      :src="publicPath('placeholder.png')"
                       class="img-fluid mb-2"
                       width="180"
                       height="180"
@@ -261,7 +261,7 @@ const skipTo = (index: number) => {
                     :popoverValueFormatter="tooltipFormatter" />
                 </p>
                 <img
-                  src="/placeholder.png"
+                  :src="publicPath('placeholder.png')"
                   class="img-fluid mb-2"
                   width="180"
                   height="180"
