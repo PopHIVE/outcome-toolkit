@@ -116,7 +116,7 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       dataUsage:
         "Data on Alcohol Related Health Harms is provided by National Highway Traffic Safety Administration (NHTSA), National Emergency Medical Services Information System (NEMSIS). The content reproduced from the NEMSIS Database remains the property of the National Highway Traffic Safety Administration (NHTSA). The National Highway Traffic Safety Administration is not responsible for any claims arising from works based on the original Data, Text, Tables, or Figures.",
       dataSource: "NEMSIS",
-      timeRange: "Jan 2023. - Dec. 2023",
+      timeRange: DATA_SOURCE === "api" ? "Jan 2023. - Dec. 2023" : "Jan. 2023 - Jul. 2025",
       valueFormatter: (n) => compactNumber(n, { precision: 0, hideBelow: 0 }),
     },
     populationTarget: 500_000,
@@ -155,7 +155,8 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
     metric: {
       key: "total_mean",
       keyT6mo: "total_mean_6mo",
-      hasMetricValues: true,
+      // The static site's data (health-outcomes bundle_outcome_toolkit) has only bins for local areas.
+      hasMetricValues: DATA_SOURCE === "api",
       label: "Aggregate 10-year risk of heart attack and stroke for people aged 40-70 years",
       shortLabel: "ASCVD risk score (avg 40-70 yrs)",
       dataSource: "Veridigm",
@@ -165,7 +166,7 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       coverageByState: "",
       // TODO: Minimum rank is based on the lower end of an individual's 'Intermediate Risk'. This should be changed to something the program or Health SMEs agree upon. Source: https://tools.acc.org/ascvd-risk-estimator-plus/#!/calculate/estimate/
       minRank: 5,
-      timeRange: "Jan. 2022 - Dec. 2023",
+      timeRange: DATA_SOURCE === "api" ? "Jan. 2022 - Dec. 2023" : "Jan. 2022 - Aug. 2025",
       valueFormatter: (n) => compactPercent(n, { hideBelow: 0, precision: 1 }),
     },
     populationTarget: 700_000,
@@ -220,7 +221,7 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       definitions: publicPath("/Outcome Toolkit Program_Opioid Overdose_Measure Definition.xlsx"),
       coverageByState: "",
       minRank: 5,
-      timeRange: "Jan. 2023 - Dec. 2023",
+      timeRange: DATA_SOURCE === "api" ? "Jan. 2023 - Dec. 2023" : "Jan. 2023 - Jul. 2025",
       valueFormatter: (n) => compactNumber(n, { hideBelow: 0, precision: 1 }),
     },
     spatialGranularity: "COUNTY",
@@ -252,7 +253,7 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
     metric: {
       key: "any_soc_rate",
       keyT6mo: "any_soc_rate_6mo",
-      // Ingest maternal data only has binned ranges, not point values.
+      // The static site's data (health-outcomes bundle_outcome_toolkit) has only bins for local areas.
       hasMetricValues: DATA_SOURCE === "api",
       label:
         "Rate of severe obstetric complications (SOC) during the delivery hospitalization and 60 days postpartum per 10,000 deliveries (open claims only)",
@@ -266,7 +267,7 @@ export const OUTCOME_DATA: Record<OutcomeKeyType, OutcomeType> = {
       definitions: "",
       coverageByState: "",
       minRank: 5,
-      timeRange: "Jan. 2021 - Oct. 2023",
+      timeRange: DATA_SOURCE === "api" ? "Jan. 2021 - Oct. 2023" : "Jan. 2021 - Jun. 2025",
       valueFormatter: (n) => compactNumber(n, { hideBelow: 0, precision: 1 }),
     },
     populationTarget: 5_000_000,
