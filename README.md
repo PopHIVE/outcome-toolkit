@@ -18,11 +18,20 @@ information on specific outcomes, coupled with demographics from US Census data.
 
 ## Static site (GitHub Pages)
 
-The frontend can run without the backend. By default it loads outcome data from the
-[PopHIVE Ingest `bundle_health_outcomes`](https://github.com/PopHIVE/Ingest/tree/main/data/bundle_health_outcomes)
-parquet files at page load, and geography from `frontend/public/local-data/` (built by
+The frontend can run without the backend. By default it loads monthly outcome data from the
+[`bundle_outcome_toolkit`](https://github.com/PopHIVE/health-outcomes/tree/main/data/bundle_outcome_toolkit) in
+PopHIVE/health-outcomes and geography from `frontend/public/local-data/` (built by
 `node frontend/scripts/build-geography.mjs`). Pushing to `main` builds and deploys it with
 `.github/workflows/deploy-pages.yml`.
+
+The bundle holds only what the site shows: each county / ZCTA3 as its monthly and six-month-average bin (rank,
+range, label), and precise values for the nation only. Bins are computed in the bundle's `build.R`. Its files are
+copied into `frontend/public/local-data/health-outcomes/`, with a `manifest.json` recording the source commit. To
+pick up new data, run this from `frontend/` with git access to health-outcomes, then commit and push:
+
+```bash
+node scripts/sync-health-outcomes.mjs            # or: node scripts/sync-health-outcomes.mjs <path to a local checkout>
+```
 
 To preview locally: `cd frontend && npm ci && npm run dev`. Set `VITE_DATA_SOURCE=api` to use the original backend
 instead. Login-only features (projects, invites) and payout targets require the backend.

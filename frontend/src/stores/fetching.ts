@@ -60,7 +60,7 @@ export function okOrThrow(res: Response): Response {
 }
 
 /**
- * Load everything from the PopHIVE Ingest parquet files + static geography instead of the backend API.
+ * Load everything from the PopHIVE health-outcomes files + static geography instead of the backend API.
  * See stores/ingestData.ts.
  */
 function doIngestFetches() {
@@ -83,22 +83,22 @@ function doIngestFetches() {
     })
     .catch((err) => console.error("Problem loading area demographics.", err));
 
-  const latestDates: Partial<Record<OutcomeKeyType, Date>> = {};
+  const dates: Partial<Record<OutcomeKeyType, { earliest: Date; latest: Date }>> = {};
   Promise.all(
     _.map(OUTCOME_DATA, (outcome) =>
       loadIngestOutcome(outcome.key)
-        .then(({ details, bins, latestDate }) => {
+        .then(({ details, bins, earliestDate, latestDate }) => {
           const metricKey = outcome.metric.key;
           dataStore._metricBins[outcome.key] = bins;
           dataStore._timeBins[metricKey] = _.map(_.keys(bins[metricKey]), makeTimeBin);
           _.merge(dataStore._overviewData, details);
-          latestDates[outcome.key] = latestDate;
+          dates[outcome.key] = { earliest: earliestDate, latest: latestDate };
           dataStore.setDataIsReady(outcome.key, true);
         })
-        .catch((err) => console.error("Problem loading Ingest data for outcome", outcome.key, err))
+        .catch((err) => console.error("Problem loading data for outcome", outcome.key, err))
     )
   ).then(() => {
-    dataStore._dataDetails = dataDetailsFromIngest(latestDates);
+    dataStore._dataDetails = dataDetailsFromIngest(dates);
     useSelectionStore().chooseBestTimeBin({ metricKey: useNavigationStore().metric().key });
   });
 

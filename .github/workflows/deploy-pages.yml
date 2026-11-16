@@ -1,4 +1,4 @@
-# Builds the frontend as a static site (data from PopHIVE Ingest, no backend) and deploys it to GitHub Pages.
+# Builds the frontend as a static site (data from PopHIVE health-outcomes, no backend) and deploys it to GitHub Pages.
 name: Deploy to GitHub Pages
 
 on:

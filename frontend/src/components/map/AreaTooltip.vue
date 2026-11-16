@@ -110,19 +110,16 @@ function setupComponent() {
       <div
         v-if="
           !metricData ||
-          _.isNil(navStore.metric().hasMetricValues ? metricData?.value : metricData?.bin_rank) ||
+          _.isNil(metricData?.bin_rank) ||
           !selStore.currentTimeBin
         "
         class="actual-warning">
         No data available.
       </div>
       <template v-else>
+        <!-- Only the area's range is shown, never its precise value. -->
         <template v-if="navStore.metric().hasMetricValues">
-          <div class="actual-label">{{ navStore.metric().label }}</div>
-          <ValueBox
-            class="actual-value"
-            :metric-value="metricData.value"
-            :value-formatter="outcome.metric.valueFormatter" />
+          <div class="actual-label range-label">{{ navStore.metric().label }}</div>
         </template>
         <template v-else>
           <div class="actual-warning">Precise data is unavailable. Value is in range below.</div>
@@ -229,6 +226,10 @@ hr {
 .actual-label {
   grid-area: actual-label;
   padding-bottom: 0.5em;
+}
+
+.range-label {
+  grid-column: span 2;
 }
 
 .actual-value {
